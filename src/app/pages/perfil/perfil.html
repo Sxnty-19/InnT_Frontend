@@ -1,1 +1,196 @@
-<p>perfil works!</p>
+<app-navbar></app-navbar>
+<app-navbar-a></app-navbar-a>
+
+<div class="perfil-container">
+
+    <div class="page-header">
+        <div class="page-header-bg-dots"></div>
+        <div class="page-header-content">
+            <div class="page-header-left">
+                <span class="page-tag">✦ Mi cuenta</span>
+                <h1>Editar <em>Perfil</em></h1>
+                <p>Mantén tus datos actualizados para una mejor experiencia.</p>
+            </div>
+            <div class="page-header-right">
+                <div class="header-stat">
+                    <span class="header-stat-icon">📋</span>
+                    <div>
+                        <strong>Gestión de cuenta</strong>
+                        <span>Datos personales y documentos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="perfil-body">
+        <div class="section-row">
+
+            <div class="perfil-card main-card">
+                <div class="card-header">
+                    <div class="card-header-icon">👤</div>
+                    <div>
+                        <h3>Datos Personales</h3>
+                        <p>Los campos con <span class="required">*</span> son obligatorios</p>
+                    </div>
+                </div>
+
+                <form [formGroup]="perfilForm" (ngSubmit)="actualizarUsuario()" class="perfil-form">
+
+                    <div class="form-section-label"><span>Nombres</span></div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Primer Nombre <span class="required">*</span></label>
+                            <input type="text" formControlName="primer_nombre" placeholder="Ej: Carlos" />
+                        </div>
+                        <div class="form-group">
+                            <label>Segundo Nombre</label>
+                            <input type="text" formControlName="segundo_nombre" placeholder="Opcional" />
+                        </div>
+                    </div>
+
+                    <div class="form-section-label"><span>Apellidos</span></div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Primer Apellido <span class="required">*</span></label>
+                            <input type="text" formControlName="primer_apellido" placeholder="Ej: García" />
+                        </div>
+                        <div class="form-group">
+                            <label>Segundo Apellido<span class="required">*</span></label>
+                            <input type="text" formControlName="segundo_apellido" placeholder="Opcional" />
+                        </div>
+                    </div>
+
+                    <div class="form-section-label"><span>Contacto</span></div>
+                    <div class="form-grid form-grid--1">
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="text" formControlName="telefono" placeholder="Ej: 3001234567" />
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electrónico</label>
+                            <input type="email" formControlName="correo" placeholder="Ej: ejemplo@correo.com" />
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save" [disabled]="perfilForm.invalid">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                                <polyline points="17 21 17 13 7 13 7 21" />
+                                <polyline points="7 3 7 8 15 8" />
+                            </svg>
+                            Guardar cambios
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="side-panel">
+
+                <div class="side-tip-card">
+                    <div class="tip-icon">💡</div>
+                    <h4>Informacion</h4>
+                    <ul class="tip-list">
+                        <li>Protegemos tu información personal mediante medidas de seguridad y confidencialidad.</li>
+                        <li>El número telefónico registrado será usado únicamente para comunicaciones relacionadas con
+                            tu cuenta o reservas.</li>
+                        <li>Tu correo electrónico permitirá enviarte notificaciones, confirmaciones y avisos
+                            importantes.</li>
+                        <li>Mantén tu correo electrónico actualizado y correctamente validado.</li>
+                        <li>Asegúrate de que tus documentos de identificación estén vigentes y verificados.</li>
+                        <li>Recuerda usar la opcion (Validar Documento), para evitar problemas con las reservas.</li>
+                        <li>Toda información sensible es almacenada bajo protocolos de protección de datos.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="perfil-card docs-card">
+
+            <div class="card-header">
+                <div class="card-header-icon">📄</div>
+                <div>
+                    <h3>Documentos de Identidad</h3>
+                    <p>Documentos registrados en el sistema para tu perfil.</p>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Número</th>
+                            <th>Lugar de Expedición</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let d of documentos">
+                            <td><span class="tipo-badge">{{ d.tipo_documento }}</span></td>
+                            <td class="td-mono">{{ d.numero_documento }}</td>
+                            <td>{{ d.lugar_expedicion }}</td>
+                            <td class="acciones-cell">
+                                <button class="btn-table btn-validar">
+                                    Validar Documento
+                                </button>
+
+                                <button class="btn-table btn-eliminar" (click)="eliminarDocumento(d.id_documento)">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="documentos.length === 0">
+                            <td colspan="5" class="empty-row">
+                                <span>📭</span> No hay documentos registrados aún.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-divider">
+                <span>➕ Agregar nuevo documento</span>
+            </div>
+
+            <form [formGroup]="documentoForm" (ngSubmit)="crearDocumento()" class="doc-form">
+                <div class="form-grid form-grid--3">
+                    <div class="form-group">
+                        <label>Tipo de documento</label>
+                        <select formControlName="id_tdocumento">
+                            <option value="">Seleccione un tipo</option>
+                            <option *ngFor="let t of tiposDocumentos" [value]="t.id_tdocumento">
+                                {{ t.nombre }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Número de documento</label>
+                        <input type="text" formControlName="numero_documento" placeholder="Ej: 1234567890" />
+                    </div>
+                    <div class="form-group">
+                        <label>Lugar de Expedición</label>
+                        <input type="text" formControlName="lugar_expedicion" placeholder="Ej: Bogotá" />
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-add">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="16" />
+                            <line x1="8" y1="12" x2="16" y2="12" />
+                        </svg>
+                        Agregar documento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>
