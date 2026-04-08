@@ -1,11 +1,41 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {
+export class Navbar implements OnInit {
 
+  fullName = '';
+
+  constructor(private router: Router, private cd: ChangeDetectorRef) { }
+
+  ngOnInit(): void {
+    this.fullName = localStorage.getItem('nombre') || 'Acceso Denegado (PERMISOS BLOQUEADOS)';
+    this.cd.detectChanges();
+  }
+
+  irPrincipal(): void {
+    this.router.navigate(['/principal']);
+  }
+
+  editarPerfil(): void {
+    this.router.navigate(['/perfil']);
+  }
+
+  cerrarSesion(): void {
+    localStorage.clear();
+    sessionStorage.clear();
+    this.router.navigate(['/login']);
+  }
+
+  handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      this.irPrincipal();
+    }
+  }
 }
