@@ -15,7 +15,7 @@ export class Navbar implements OnInit {
   constructor(private router: Router, private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.fullName = localStorage.getItem('nombre') || 'Acceso Denegado (PERMISOS BLOQUEADOS)';
+    this.fullName = localStorage.getItem('nombre') || 'Acceso Denegado';
     this.cd.detectChanges();
   }
 

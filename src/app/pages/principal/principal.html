@@ -1,1 +1,50 @@
-<p>principal works!</p>
+<div class="principal-container">
+    <app-navbar></app-navbar>
+    <app-navbar-a></app-navbar-a>
+
+    <div class="principal-content">
+        <section class="main-content">
+
+            <div *ngIf="nombre_U; else noUser" class="welcome-wrapper">
+
+                <div class="welcome-hero">
+                    <div class="welcome-hero-bg-dots"></div>
+                    <div class="welcome-hero-inner">
+                        <span class="welcome-tag">✦ Panel de inicio</span>
+                        <h2 class="welcome-title">
+                            ¡Bienvenido(a),<br />
+                            <em>{{ nombre_U }}</em>!
+                        </h2>
+                        <p class="welcome-subtitle">
+                            Tienes acceso como <strong>{{ nombre_r }}</strong>. Selecciona un módulo arriba para
+                            comenzar.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-icon">💡</div>
+                    <div class="tip-text">
+                        <strong>¿Cómo navegar?</strong>
+                        <p>Usa la barra de <strong>"Módulos"</strong> en la parte superior para acceder a las distintas
+                            secciones del sistema según tu rol.</p>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #noUser>
+                <div class="no-user-wrapper">
+                    <div class="no-user-icon">⏳</div>
+                    <h2>Cargando sesión...</h2>
+                    <p>
+                        Si esto tarda demasiado, por favor
+                        <a routerLink="/login" class="login-link">inicia sesión nuevamente</a>.
+                    </p>
+                </div>
+            </ng-template>
+
+        </section>
+    </div>
+
+    <app-footer></app-footer>
+</div>
