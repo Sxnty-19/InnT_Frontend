@@ -1,1 +1,141 @@
-<p>c-solicitar works!</p>
+<app-navbar></app-navbar>
+<app-navbar-a></app-navbar-a>
+
+<div class="solicitar-container">
+
+    <div class="page-header">
+        <div class="page-header-bg-dots"></div>
+        <div class="page-header-content">
+            <div class="page-header-left">
+                <span class="page-tag">✦ Servicios</span>
+                <h1>Centro de <em>Solicitudes</em></h1>
+                <p>Gestiona tus peticiones de servicio y revisa su estado en tiempo real.</p>
+            </div>
+            <div class="page-header-right">
+                <div class="header-stat">
+                    <span class="header-stat-icon">📋</span>
+                    <div>
+                        <strong>{{ fullName || 'Huésped' }}</strong>
+                        <span>{{ solicitudes.length }} solicitud(es) registrada(s)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="solicitar-body">
+
+        <div class="tabs-nav">
+            <button class="tab-btn" [class.active]="activeView === 'create'" (click)="activeView = 'create'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 5v14" />
+                    <path d="M5 12h14" />
+                </svg>
+                Crear Solicitud
+            </button>
+            <button class="tab-btn" [class.active]="activeView === 'history'" (click)="activeView = 'history'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 2v10" />
+                    <path d="M5 9l-3 3 3 3" />
+                    <path d="M19 9l3 3-3 3" />
+                    <rect x="2" y="16" width="20" height="4" rx="2" />
+                </svg>
+                Ver Historial
+            </button>
+        </div>
+
+        <br />
+
+        <div *ngIf="activeView === 'create'">
+            <div class="perfil-card form-card">
+
+                <div class="card-header">
+                    <div class="card-header-icon">📝</div>
+                    <div>
+                        <h3>Nueva Petición de Servicio</h3>
+                        <p>Describe lo que necesitas y te atenderemos lo antes posible.</p>
+                    </div>
+                </div>
+
+                <p class="error-text" *ngIf="error">{{ error }}</p>
+
+                <div class="form-group">
+                    <label for="room-number">Número de habitación</label>
+                    <input type="number" id="room-number" [(ngModel)]="numeroHabitacion" placeholder="Ej: 203"
+                        min="1" />
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descripción de la solicitud</label>
+                    <textarea id="description" [(ngModel)]="descripcion"
+                        placeholder="Necesito toallas extra, el aire acondicionado no funciona, etc."
+                        rows="5"></textarea>
+                </div>
+
+                <button class="btn-crear" (click)="crearNotificacion()" [disabled]="isSubmitting">
+                    <span class="btn-spinner" *ngIf="isSubmitting"></span>
+                    <svg *ngIf="!isSubmitting" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13" />
+                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                    </svg>
+                    {{ isSubmitting ? 'Enviando...' : 'Enviar Solicitud' }}
+                </button>
+
+            </div>
+        </div>
+
+        <div *ngIf="activeView === 'history'">
+            <div class="perfil-card">
+
+                <div class="card-header">
+                    <div class="card-header-icon">🗂️</div>
+                    <div>
+                        <h3>Historial de Solicitudes</h3>
+                        <p>Consulta el estado de todas tus peticiones enviadas.</p>
+                    </div>
+                </div>
+
+                <div class="empty-state" *ngIf="solicitudes.length === 0 && !error">
+                    <span class="empty-icon">📭</span>
+                    <h4>Sin solicitudes registradas</h4>
+                    <p>No tienes solicitudes de servicio registradas aún.</p>
+                    <button class="btn-go-crear" (click)="activeView = 'create'">Crear una solicitud</button>
+                </div>
+
+                <p class="error-text" *ngIf="error">{{ error }}</p>
+
+                <div class="table-wrapper" *ngIf="solicitudes.length > 0">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Habitación</th>
+                                <th>Descripción</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of solicitudes" [class.row-activa]="item.estado === true">
+                                <td class="td-hab">{{ item.numero_habitacion }}</td>
+                                <td class="td-desc">{{ item.descripcion }}</td>
+                                <td>{{ item.date_created | date:'longDate' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<app-footer></app-footer>
+
+<div class="notification-toast" *ngIf="showMessage" [class.active]="isModalActive" [class.success]="isSuccess"
+    [class.error]="!isSuccess">
+    <span class="toast-icon">{{ isSuccess ? '✔' : '✖' }}</span>
+    <p>{{ message }}</p>
+</div>

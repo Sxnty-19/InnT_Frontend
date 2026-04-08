@@ -7,3 +7,7 @@ export interface Solicitud {
     date_created: string
     date_updated: string
 }
+
+export interface SolicitudConHabitacion extends Solicitud {
+    numero_habitacion: string;
+}
