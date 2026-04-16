@@ -641,7 +641,7 @@ label {
 .table-wrapper {
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 200px;
   border-radius: 14px;
   border: 1px solid #f1f5f9;
 }
