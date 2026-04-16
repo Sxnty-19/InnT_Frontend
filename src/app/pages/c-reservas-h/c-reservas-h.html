@@ -1,1 +1,87 @@
-<p>c-reservas-h works!</p>
+<app-navbar></app-navbar>
+<app-navbar-a></app-navbar-a>
+
+<div class="historial-container">
+
+    <div class="page-header">
+        <div class="page-header-bg-dots"></div>
+        <div class="page-header-content">
+            <div class="page-header-left">
+                <span class="page-tag">✦ Mis reservas</span>
+                <h1>Historial de <em>Reservas</em></h1>
+                <p>Consulta todas tus reservas finalizadas y canceladas.</p>
+            </div>
+            <div class="page-header-right">
+                <div class="header-stat">
+                    <span class="header-stat-icon">📜</span>
+                    <div>
+                        <strong>{{ historial.length }} registro(s)</strong>
+                        <span>en tu historial</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="historial-body">
+
+        <div class="loading-bar-wrap" *ngIf="isLoading">
+            <div class="loading-bar"></div>
+        </div>
+
+        <div class="empty-state" *ngIf="!isLoading && historial.length === 0">
+            <span class="empty-icon">📭</span>
+            <h4>{{ error || 'Sin historial disponible' }}</h4>
+            <p>Aún no tienes reservas finalizadas o canceladas registradas.</p>
+        </div>
+
+        <div class="perfil-card" *ngIf="!isLoading && historial.length > 0">
+
+            <div class="card-header">
+                <div class="card-header-icon">📋</div>
+                <div>
+                    <h3>Reservas Anteriores</h3>
+                    <p>Listado completo de tu historial de estadías.</p>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="doc-table" [class.fade-in]="isLoaded">
+                    <thead>
+                        <tr>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Niños</th>
+                            <th>Mascotas</th>
+                            <th>Capacidad MAX</th>
+                            <th>Total (COP)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of historial; let i = index" [style.animation-delay]="(i * 0.05) + 's'">
+                            <td>{{ item.date_start | date:'longDate' }}</td>
+                            <td>{{ item.date_end | date:'longDate' }}</td>
+                            <td>
+                                <span [class.badge-yes]="item.tiene_ninos" [class.badge-no]="!item.tiene_ninos">
+                                    {{ item.tiene_ninos ? 'Sí' : 'No' }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <span [class.badge-yes]="item.tiene_mascotas" [class.badge-no]="!item.tiene_mascotas">
+                                    {{ item.tiene_mascotas ? 'Sí' : 'No' }}
+                                </span>
+                            </td>
+                            <td>{{ item.capacidad_total }} Personas</td>
+                            <td>${{ item.total_cop | number}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<app-footer></app-footer>
