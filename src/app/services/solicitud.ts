@@ -19,6 +19,10 @@ export class Solicitud {
     return this.http.post(`${this.URL}/`, data, { headers: this.getHeaders() });
   }
 
+  get_solicitudes(): Observable<any> {
+    return this.http.get(`${this.URL}/`, { headers: this.getHeaders() });
+  }
+
   get_solicitudes_usuario(): Observable<any> { //
     return this.http.get(`${this.URL}/usuario/`, { headers: this.getHeaders() });
   }
@@ -34,5 +38,9 @@ export class Solicitud {
     return this.http.post(`${this.URL}/habitacion/`, formData, {
       headers: this.getHeaders()
     });
+  }
+
+  update_solicitud(id_solicitud: number): Observable<any> {
+    return this.http.put(`${this.URL}/${id_solicitud}`, {}, { headers: this.getHeaders() });
   }
 }
