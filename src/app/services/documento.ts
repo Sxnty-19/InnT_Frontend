@@ -19,6 +19,10 @@ export class Documento {
     return this.http.post(`${this.URL}/`, data, { headers: this.getHeaders(), });
   }
 
+  get_documentos_usuarios(): Observable<any> { //
+    return this.http.get(`${this.URL}/usuarios/`, { headers: this.getHeaders(), });
+  }
+
   get_documentos_usuario(): Observable<any> { //
     return this.http.get(`${this.URL}/usuario/`, { headers: this.getHeaders(), });
   }
