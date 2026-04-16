@@ -6,3 +6,9 @@ export interface Rol {
     date_created: string
     date_updated: string
 }
+
+export interface RolBasico {
+    id_rol: number
+    nombre: string
+    estado: boolean
+}

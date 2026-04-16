@@ -6,3 +6,9 @@ export interface ModuloRol {
     date_created: string
     date_updated: string
 }
+
+export interface ModuloAsignado {
+    id_modulo: number;
+    nombre: string;
+    ruta: string;
+}
