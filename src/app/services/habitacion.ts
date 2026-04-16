@@ -15,7 +15,7 @@ export class Habitacion {
     return new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
   }
 
-  createHabitacion(data: Habitacion): Observable<any> {
+  createHabitacion(data: any): Observable<any> {
     return this.http.post(this.URL, data, { headers: this.getHeaders() });
   }
 
