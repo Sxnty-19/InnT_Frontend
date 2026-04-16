@@ -82,17 +82,14 @@
                         </div>
 
                         <div class="form-grid">
-
                             <div class="form-group">
                                 <label>¿Viajas con niños?</label>
                                 <div class="radio-group">
                                     <label>
-                                        <input type="radio" name="ninos" [value]="true" [(ngModel)]="tiene_ninos">
-                                        Sí
+                                        <input type="radio" name="ninos" [value]="true" [(ngModel)]="tiene_ninos"> Sí
                                     </label>
                                     <label>
-                                        <input type="radio" name="ninos" [value]="false" [(ngModel)]="tiene_ninos">
-                                        No
+                                        <input type="radio" name="ninos" [value]="false" [(ngModel)]="tiene_ninos"> No
                                     </label>
                                 </div>
                             </div>
@@ -101,17 +98,13 @@
                                 <label>¿Viajas con mascotas?</label>
                                 <div class="radio-group">
                                     <label>
-                                        <input type="radio" name="mascotas" [value]="true" [(ngModel)]="tiene_mascotas">
-                                        Sí
+                                        <input type="radio" name="mascotas" [value]="true" [(ngModel)]="tiene_mascotas"> Sí
                                     </label>
                                     <label>
-                                        <input type="radio" name="mascotas" [value]="false"
-                                            [(ngModel)]="tiene_mascotas">
-                                        No
+                                        <input type="radio" name="mascotas" [value]="false" [(ngModel)]="tiene_mascotas"> No
                                     </label>
                                 </div>
                             </div>
-
                         </div>
 
                         <button class="btn-search" (click)="buscarHabitaciones()" [disabled]="isLoading">
@@ -132,8 +125,7 @@
 
                             <div class="room-empty" *ngIf="availRooms.length === 0">
                                 <span>🔍</span>
-                                <p>{{ (!date_start || !date_end) ? 'Ingresa las fechas para buscar.' : 'No
-                                    hay habitaciones disponibles para el periodo seleccionado.' }}</p>
+                                <p>{{ (!date_start || !date_end) ? 'Ingresa las fechas para buscar.' : 'No hay habitaciones disponibles para el periodo seleccionado.' }}</p>
                             </div>
 
                             <ul class="room-list" *ngIf="availRooms.length > 0">
@@ -144,8 +136,9 @@
                                             <span class="room-name">Hab. {{ hab.numero }}</span>
                                             <span class="room-id"> Tipo: {{ hab.tipo_habitacion }}</span>
                                             <span class="room-extra">
-                                                Para un Maximo de {{ hab.capacidad_max }} personas y con un Costo de ${{
-                                                hab.precio_x_dia }}
+                                                <i class="icon-user">👤</i> Hasta {{ hab.capacidad_max }} 
+                                                <span class="divider">|</span> 
+                                                <i class="icon-price">💰</i> <strong>${{ hab.precio_x_dia | number }}</strong> /noche
                                             </span>
                                         </div>
                                     </div>
@@ -167,7 +160,7 @@
 
                         <div class="room-section">
                             <div class="room-section-header">
-                                <h5>Habitaciones seleccionadas</h5>
+                                <h5>Seleccionadas</h5>
                                 <span class="room-count room-count--gold">{{ selectedRooms.length }}</span>
                             </div>
 
@@ -182,10 +175,10 @@
                                         <span class="room-icon">✅</span>
                                         <div>
                                             <span class="room-name">{{ s.numero }}</span>
-                                            <span class="room-id">Tipo: {{ s.tipo_habitacion }}</span>
+                                            <span class="room-id">{{ s.tipo_habitacion }}</span>
                                         </div>
                                     </div>
-                                    <button class="btn-quitar" (click)="quitarHab(s.id_habitacion)">✕ Quitar</button>
+                                    <button class="btn-quitar" (click)="quitarHab(s.id_habitacion)">✕</button>
                                 </li>
                             </ul>
                         </div>
@@ -193,12 +186,12 @@
                         <div class="summary-box">
                             <div class="summary-row">
                                 <span class="summary-label">📅 Entrada (1:30 PM)</span>
-                                <span class="summary-value">{{ date_start || '—' }}</span>
+                                <span class="summary-value">{{ (date_start | date:'dd MMM, yyyy') || '—' }}</span>
                             </div>
                             <div class="summary-divider"></div>
                             <div class="summary-row">
                                 <span class="summary-label">📅 Salida (3:30 PM)</span>
-                                <span class="summary-value">{{ date_end || '—' }}</span>
+                                <span class="summary-value">{{ (date_end | date:'dd MMM, yyyy') || '—' }}</span>
                             </div>
                             <div class="summary-divider"></div>
                             <div class="summary-row">
@@ -210,16 +203,12 @@
                                 <span class="summary-label">👥 Capacidad MAX</span>
                                 <span class="summary-value">{{ totalCapacidad }} personas</span>
                             </div>
-
                             <div class="summary-divider"></div>
-
                             <div class="summary-row">
                                 <span class="summary-label">🌙 Noches</span>
                                 <span class="summary-value">{{ totalDias }}</span>
                             </div>
-
                             <div class="summary-divider"></div>
-
                             <div class="summary-row">
                                 <span class="summary-label">💰 Total (COP)</span>
                                 <span class="summary-value summary-value--accent">
@@ -268,36 +257,54 @@
                             <tr>
                                 <th>Fecha Inicio</th>
                                 <th>Fecha Fin</th>
-                                <th>Niños</th>
-                                <th>Mascotas</th>
-                                <th>Capacidad MAX</th>
-                                <th>Total (COP)</th>
-                                <th>Acción</th>
+                                <th>Extras</th>
+                                <th>Capacidad</th>
+                                <th>Total Reserva</th>
+                                <th>Gestión</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let r of reservasActivas">
-                                <td>{{ r.date_start | date:'longDate' }}</td>
-                                <td>{{ r.date_end | date:'longDate' }}</td>
                                 <td>
-                                    <span [class.badge-yes]="r.tiene_ninos" [class.badge-no]="!r.tiene_ninos">
-                                        {{ r.tiene_ninos ? 'Sí' : 'No' }}
-                                    </span>
+                                    <div class="td-date">
+                                        <span class="date-main">{{ r.date_start | date:'dd MMM, yyyy' }}</span>
+                                        <span class="date-time">Entrada 1:30 PM</span>
+                                    </div>
                                 </td>
-
                                 <td>
-                                    <span [class.badge-yes]="r.tiene_mascotas" [class.badge-no]="!r.tiene_mascotas">
-                                        {{ r.tiene_mascotas ? 'Sí' : 'No' }}
-                                    </span>
+                                    <div class="td-date">
+                                        <span class="date-main">{{ r.date_end | date:'dd MMM, yyyy' }}</span>
+                                        <span class="date-time">Salida 3:30 PM</span>
+                                    </div>
                                 </td>
-
-                                <td>{{ r.capacidad_total }} Personas</td>
-
-                                <td>${{ r.total_cop | number }}</td>
-
+                                <td>
+                                    <div class="td-badges">
+                                        <span [class]="r.tiene_ninos ? 'badge-yes' : 'badge-no'">
+                                            {{ r.tiene_ninos ? '👶 Niños' : 'Sin niños' }}
+                                        </span>
+                                        <span [class]="r.tiene_mascotas ? 'badge-yes' : 'badge-no'">
+                                            {{ r.tiene_mascotas ? '🐾 Mascotas' : 'Sin mascotas' }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="td-capacity">
+                                        <strong>{{ r.capacidad_total }}</strong>
+                                        <span>Personas</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="td-price">
+                                        <span class="currency">COP</span>
+                                        <strong>{{ r.total_cop | number }}</strong>
+                                    </div>
+                                </td>
                                 <td>
                                     <button class="btn-cancelar" (click)="showCancelConfirmation(r.id_reserva)"
                                         [disabled]="isLoading">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14">
+                                            <path d="M18 6L6 18M6 6l12 12"/>
+                                        </svg>
                                         Cancelar
                                     </button>
                                 </td>
@@ -312,8 +319,8 @@
     </div>
 </div>
 
-<div class="notification-toast" *ngIf="showMessage" [class.success]="isSuccess" [class.error]="!isSuccess">
-    <span class="toast-icon">{{ isSuccess ? '✔' : '✖' }}</span>
+<div class="notification-toast" *ngIf="showMessage" [ngClass]="isSuccess ? 'success' : 'error'">
+    <div class="toast-icon">{{ isSuccess ? '✅' : '❌' }}</div>
     <p>{{ message }}</p>
     <button class="toast-close" (click)="hideNotification()">✕</button>
 </div>
@@ -324,13 +331,13 @@
         <h3 class="modal-title">Confirmar Cancelación</h3>
         <p class="modal-body">
             ¿Estás seguro de que deseas cancelar la reserva
-            <strong>#{{ reservationToCancel.id_reserva }}</strong>
-            <strong>{{ reservationToCancel.date_start.substring(0, 10) }}</strong>? <br><br>
+            <strong>#{{ reservationToCancel.id_reserva }}</strong> del
+            <strong>{{ reservationToCancel.date_start | date:'dd/MM/yyyy' }}</strong>? <br><br>
             <span class="modal-warning">Esta acción no se puede deshacer.</span>
         </p>
         <div class="modal-actions">
             <button class="btn-modal-keep" (click)="cancelConfirmation()" [disabled]="isLoading">
-                No, mantener
+                Cancelar
             </button>
             <button class="btn-modal-confirm" (click)="executeCancellation()" [disabled]="isLoading">
                 <span class="btn-spinner btn-spinner--light" *ngIf="isLoading"></span>
@@ -339,4 +346,5 @@
         </div>
     </div>
 </div>
+
 <app-footer></app-footer>

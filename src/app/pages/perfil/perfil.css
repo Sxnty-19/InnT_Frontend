@@ -750,9 +750,21 @@ label {
 
 .table-wrapper {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 400px;
   border-radius: 12px;
   border: 1px solid #f1f5f9;
   margin-bottom: 0;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
 }
 
 .doc-table {
@@ -763,6 +775,9 @@ label {
 
 .doc-table thead {
   background: var(--color-background-gray);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .doc-table th {
