@@ -19,8 +19,8 @@ export class Habitacion {
     return this.http.post(this.URL, data, { headers: this.getHeaders() });
   }
 
-  getHabitaciones(): Observable<Habitacion[]> {
-    return this.http.get<Habitacion[]>(this.URL, { headers: this.getHeaders() });
+  getHabitaciones(): Observable<any[]> {
+    return this.http.get<any[]>(this.URL, { headers: this.getHeaders() });
   }
 
   getDisponibles(date_start: string, date_end: string): Observable<any[]> { //
