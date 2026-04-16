@@ -114,6 +114,352 @@
   animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }
 
+/* --- NAVEGACIÓN DE TABS --- */
+.tabs-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  background: var(--color-light);
+  padding: 6px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-subtle);
+  border: 1px solid rgba(0,0,0,0.04);
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.tab-btn {
+display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--color-medium-gray);
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: 'Georgia', serif;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tab-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.tab-btn:hover {
+  color: var(--color-dark-text);
+  background: var(--color-background-gray);
+}
+
+.tab-btn.active {
+  background: var(--color-dark);
+  color: var(--color-light);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+}
+
+.tab-badge {
+  background: var(--color-secondary);
+  color: var(--color-dark);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 1px 7px;
+  border-radius: 50px;
+  line-height: 1.6;
+}
+
+/* --- BOTÓN ELIMINAR EN TABLA --- */
+.acciones-cell {
+  text-align: right;
+}
+
+.btn-action-delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(239, 68, 68, 0.05);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Georgia', serif;
+}
+
+.btn-action-delete svg {
+  width: 14px;
+  height: 14px;
+}
+
+.btn-action-delete:hover {
+  background: #dc2626;
+  color: white;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+  transform: translateY(-1px);
+}
+
+/* --- MODAL DE CONFIRMACIÓN (ESTILO RESERVAS TOTAL) --- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0; /* Cubre toda la ventana: top, left, right, bottom: 0 */
+  background: rgba(15, 23, 42, 0.7); /* Azul oscuro semitransparente de reservas */
+  backdrop-filter: blur(8px) saturate(160%); /* Desenfoque de cristal */
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  
+  /* Z-INDEX CRÍTICO: 10000 para estar por encima de TODO */
+  z-index: 10000; 
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: backdropIn 0.25s ease both;
+}
+
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-card {
+  background: var(--color-light);
+  border-radius: 24px;
+  padding: 40px 36px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+  text-align: center;
+  animation: modalIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  
+  /* Línea roja decorativa superior como en el modal de cancelar reserva */
+  border-top: 4px solid #ef4444; 
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.92) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-icon-wrap {
+  font-size: 2.8rem;
+  margin-bottom: 14px;
+}
+
+.modal-title {
+  font-family: 'Georgia', serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-dark-text);
+  margin-bottom: 12px;
+}
+
+.modal-body {
+  font-size: 0.9rem;
+  color: var(--color-medium-gray);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* --- MODAL DE CONFIRMACIÓN (EFECTO TOTAL ESTILO RESERVAS) --- */
+.modal-backdrop {
+  /* CAMBIO CRÍTICO: Fixed pega el elemento a la ventana del navegador (viewport) */
+  position: fixed; 
+  /* Cubre todo: top, left, right, bottom: 0 */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Ancho completo de la ventana */
+  height: 100vh; /* Alto completo de la ventana */
+  
+  /* Fondo azul profundo semitransparente (usando rgba para control) */
+  background: rgba(6, 11, 20, 0.85); 
+  
+  /* EFECTO DE CRISTAL ESMERILADO TOTAL: Blur y saturación que cubren TODA la pantalla */
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  
+  /* Centrado del modal card */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Z-INDEX CRÍTICO: 10000 para estar por encima de navbars, footers y cualquier tabla */
+  z-index: 10000; 
+  
+  padding: 24px;
+  animation: backdropFadeIn 0.3s ease;
+}
+
+/* Modal Card de Perfil ajustado para mayor impacto sobre el azul borroso */
+.modal-card.modal-delete {
+  background: var(--color-light);
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  border-radius: 28px;
+  text-align: center;
+  
+  /* Sutil borde dorado para que resalte sobre el fondo azul profundo borroso */
+  border: 1px solid rgba(252, 211, 77, 0.2);
+  
+  /* Sombra profunda para el modal card */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  
+  /* Animación de entrada de Reservas (In) */
+  animation: modalScaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+/* Animaciones para suavidad extrema (mismo timing de Reservas) */
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalScaleUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.notification-toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border-radius: 14px;
+  background: #0f172a; /* Fondo oscuro elegante */
+  color: white;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+  max-width: 380px;
+  animation: toastIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  border-left: 4px solid #10b981; /* Verde éxito */
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.notification-toast p {
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin: 0;
+  color: #f8fafc;
+}
+
+.toast-close {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+
+.toast-close:hover { color: white; }
+
+/* --- AJUSTE DE BOTONES DENTRO DEL MODAL (mismo estilo de Reservas) --- */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-modal-confirm-delete {
+  /* Rojo vibrante (error) */
+  background: #ef4444; 
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-family: 'Georgia', serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-modal-confirm-delete:hover {
+  background: #dc2626;
+  box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-modal-cancel {
+  /* Fondo gris claro suave */
+  background: #f1f5f9; 
+  color: #475569;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-family: 'Georgia', serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-modal-cancel:hover {
+  background: #e2e8f0;
+}
+/* Responsivo para el modal */
+@media (max-width: 480px) {
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+  .btn-modal-cancel, .btn-modal-confirm-delete {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* Animación de entrada para el contenido */
+.tab-content {
+  animation: tabFadeIn 0.4s ease-out;
+}
+
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajustes responsive para tabs */
+@media (max-width: 768px) {
+  .tabs-nav {
+    width: 100%;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px 10px;
+    font-size: 0.85rem;
+    justify-content: center;
+  }
+}
+
 .section-row {
   display: grid;
   grid-template-columns: 1fr 320px;

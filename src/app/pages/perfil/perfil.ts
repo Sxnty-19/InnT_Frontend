@@ -22,10 +22,28 @@ export class Perfil {
 
   usuarioActual: any;
 
+  // --- Lógica de Mensajes (Toasts) ---
+  showSuccessToast: boolean = false;
+  showErrorToast: boolean = false;
+  toastMessage: string = '';
+
   documentos: any[] = [];
   tiposDocumentos: any[] = [];
 
-  constructor(private cd: ChangeDetectorRef, private fb: FormBuilder, private documentoservice: DocumentoService, private tipodocumentoservice: TipoDocumentoService, private usuarioservice: UsuarioService) { }
+  // Botón activo para las pestañas
+  activeTab: 'datos' | 'documentos' = 'datos';
+
+  // --- Estado para el Modal de Eliminación ---
+  isConfirmingDelete = false;
+  idDocumentoAEliminar: number | null = null;
+
+  constructor(
+    private cd: ChangeDetectorRef, 
+    private fb: FormBuilder, 
+    private documentoservice: DocumentoService, 
+    private tipodocumentoservice: TipoDocumentoService, 
+    private usuarioservice: UsuarioService
+  ) { }
 
   ngOnInit(): void {
     this.perfilForm = this.fb.group({
@@ -46,6 +64,27 @@ export class Perfil {
 
     this.cargarDatosUsuario();
     this.cargarTiposDocumento();
+  }
+
+  // --- Función auxiliar para disparar Toasts ---
+  private triggerToast(mensaje: string, tipo: 'success' | 'error') {
+    this.toastMessage = mensaje;
+    if (tipo === 'success') {
+      this.showSuccessToast = true;
+      this.showErrorToast = false;
+    } else {
+      this.showErrorToast = true;
+      this.showSuccessToast = false;
+    }
+
+    this.cd.detectChanges();
+
+    // Se oculta automáticamente tras 4 segundos
+    setTimeout(() => {
+      this.showSuccessToast = false;
+      this.showErrorToast = false;
+      this.cd.detectChanges();
+    }, 4000);
   }
 
   cargarDatosUsuario() {
@@ -70,12 +109,13 @@ export class Perfil {
   actualizarUsuario() {
     const data = this.perfilForm.value;
     this.usuarioservice.update_usuario(data).subscribe({
-      next: () => alert("Usuario actualizado correctamente, Los cambios se reflejarán al iniciar sesión nuevamente"),
+      next: () => {
+        this.triggerToast("Usuario actualizado correctamente. Los cambios se reflejarán en tu próxima sesión.", "success");
+      },
       error: (err) => {
         console.error(err);
-        alert(err.error.detail);
+        this.triggerToast(err.error.detail || "Error al actualizar usuario", "error");
         this.cargarDatosUsuario();
-        this.cd.detectChanges();
       }
     });
   }
@@ -105,20 +145,25 @@ export class Perfil {
   }
 
   eliminarDocumento(id_documento: number) {
-    const confirmar = confirm("¿Seguro que deseas eliminar este documento?");
+    this.idDocumentoAEliminar = id_documento;
+    this.isConfirmingDelete = true;
+    this.cd.detectChanges();
+  }
 
-    if (!confirmar) return;
+  confirmarEliminacion() {
+    if (this.idDocumentoAEliminar === null) return;
 
-    this.documentoservice.delete_documento(id_documento).subscribe({
+    this.documentoservice.delete_documento(this.idDocumentoAEliminar).subscribe({
       next: () => {
-        alert("Documento eliminado correctamente");
+        this.isConfirmingDelete = false;
+        this.idDocumentoAEliminar = null;
+        this.triggerToast("Documento eliminado correctamente", "success");
         this.cargarDocumentos();
-        this.cd.detectChanges();
       },
-
       error: (err) => {
+        this.isConfirmingDelete = false;
         console.error(err);
-        alert(err.error.detail || "Error al eliminar documento");
+        this.triggerToast(err.error.detail || "Error al eliminar documento", "error");
       }
     });
   }
@@ -126,19 +171,28 @@ export class Perfil {
   crearDocumento() {
     if (!this.usuarioActual) return;
 
+    const id = Array.isArray(this.usuarioActual) ? this.usuarioActual[0].id_usuario : this.usuarioActual.id_usuario;
+    const formValues = this.documentoForm.value;
+    
     const payload = {
-      ...this.documentoForm.value,
-      id_usuario: this.usuarioActual["id_usuario"]
+      id_tdocumento: Number(formValues.id_tdocumento),
+      numero_documento: formValues.numero_documento.toString(),
+      lugar_expedicion: formValues.lugar_expedicion,
+      estado: formValues.estado ? 1 : 0, 
+      id_usuario: id
     };
 
     this.documentoservice.create_documento(payload).subscribe({
       next: () => {
-        alert("Documento creado");
-        this.documentoForm.reset({ estado: 1 });
+        this.triggerToast("Documento agregado exitosamente", "success");
+        this.documentoForm.reset({ estado: true });
         this.cargarDocumentos();
-        this.cd.detectChanges();
       },
-      error: (err) => console.error('Error al crear documento:', err)
+      error: (err) => {
+        console.error('Error:', err);
+        const mensaje = err.error?.detail || "Revisa que los datos sean correctos";
+        this.triggerToast(mensaje, "error");
+      }
     });
   }
 }
