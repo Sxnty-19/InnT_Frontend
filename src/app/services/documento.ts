@@ -15,15 +15,15 @@ export class Documento {
     return new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
   }
 
-  create_documento(data: any): Observable<any> {
+  create_documento(data: any): Observable<any> { //
     return this.http.post(`${this.URL}/`, data, { headers: this.getHeaders(), });
   }
 
-  get_documentos_usuario(): Observable<any> {
+  get_documentos_usuario(): Observable<any> { //
     return this.http.get(`${this.URL}/usuario/`, { headers: this.getHeaders(), });
   }
 
-  delete_documento(id_documento: number): Observable<any> {
+  delete_documento(id_documento: number): Observable<any> { //
     return this.http.delete(`${this.URL}/${id_documento}`, { headers: this.getHeaders(), });
   }
 }

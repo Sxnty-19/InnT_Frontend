@@ -15,11 +15,11 @@ export class Usuario {
     return new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
   }
 
-  get_usuario_id(): Observable<any> {
+  get_usuario_id(): Observable<any> { //
     return this.http.get(`${this.URL}/id/`, { headers: this.getHeaders() });
   }
 
-  update_usuario(data: any): Observable<any> {
+  update_usuario(data: any): Observable<any> { //
     return this.http.patch(`${this.URL}/`, data, { headers: this.getHeaders() });
   }
 }

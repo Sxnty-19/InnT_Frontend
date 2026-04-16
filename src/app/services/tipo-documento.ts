@@ -19,7 +19,7 @@ export class TipoDocumento {
     return this.http.post(`${this.URL}/`, data, { headers: this.getHeaders() });
   }
 
-  get_tiposDocumento(): Observable<any> {
+  get_tiposDocumento(): Observable<any> { //
     return this.http.get(`${this.URL}/`, { headers: this.getHeaders() });
   }
 }

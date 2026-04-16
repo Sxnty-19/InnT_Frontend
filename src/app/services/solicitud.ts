@@ -19,11 +19,11 @@ export class Solicitud {
     return this.http.post(`${this.URL}/`, data, { headers: this.getHeaders() });
   }
 
-  get_solicitudes_usuario(): Observable<any> {
+  get_solicitudes_usuario(): Observable<any> { //
     return this.http.get(`${this.URL}/usuario/`, { headers: this.getHeaders() });
   }
 
-  create_solicitud_habitacion(data: any): Observable<any> {
+  create_solicitud_habitacion(data: any): Observable<any> { //
     const formData = new FormData();
 
     formData.append('id_usuario', data.id_usuario);

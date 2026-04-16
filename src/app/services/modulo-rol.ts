@@ -15,7 +15,7 @@ export class ModuloRol {
     return new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
   }
 
-  get_modulos_rol(): Observable<any> {
+  get_modulos_rol(): Observable<any> { //
     return this.http.get(`${this.URL}/rol/`, { headers: this.getHeaders() });
   }
 }
