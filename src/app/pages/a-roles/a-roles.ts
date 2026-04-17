@@ -15,7 +15,7 @@ import { ModuloAsignado } from '../../interfaces/modulo-rol';
 
 @Component({
   selector: 'app-a-roles',
-  imports: [CommonModule, FormsModule, Navbar, NavbarA],
+  imports: [CommonModule, FormsModule, Navbar, NavbarA, Footer],
   templateUrl: './a-roles.html',
   styleUrl: './a-roles.css',
 })
