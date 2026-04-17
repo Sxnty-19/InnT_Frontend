@@ -7,7 +7,7 @@
 
 .principal-content {
   flex: 1;
-  padding-top: 112px; 
+  padding-top: 68px; 
 }
 
 .main-content {
@@ -269,7 +269,7 @@
 @media (max-width: 768px) {
   /* navbar-a baja a 62px en móvil */
   .principal-content {
-    padding-top: 106px; /* 62px + 44px */
+    padding-top: 62px; /* 62px */
   }
 
   .main-content {

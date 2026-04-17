@@ -1,7 +1,7 @@
 .habitaciones-container {
   min-height: 100vh;
   background: var(--color-background-gray);
-  padding-top: 112px;
+  padding-top: 68px;
   padding-bottom: 70px;
 }
 
@@ -372,7 +372,7 @@
 }
 
 @media (max-width: 768px) {
-  .habitaciones-container { padding-top: 106px; }
+  .habitaciones-container { padding-top: 62px; }
   .page-header { padding: 32px 0; }
   .page-header-left h1 { font-size: 1.8rem; }
   .habitaciones-body { padding: 0 16px; }

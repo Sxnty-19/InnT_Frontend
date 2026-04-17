@@ -1,7 +1,7 @@
 .perfil-container {
   min-height: 100vh;
   background: var(--color-background-gray);
-  padding-top: 112px;
+  padding-top: 68px;
   padding-bottom: 70px;
 }
 
@@ -892,7 +892,7 @@ label {
 }
 
 @media (max-width: 768px) {
-  .perfil-container { padding-top: 106px; }
+  .perfil-container { padding-top: 62px; }
 
   .page-header { padding: 32px 0; }
 
