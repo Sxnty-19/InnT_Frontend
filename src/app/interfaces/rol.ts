@@ -12,3 +12,10 @@ export interface RolBasico {
     nombre: string
     estado: boolean
 }
+
+export interface RolX {
+    id_rol: number;
+    nombre: string;
+    descripcion: string;
+    estado: boolean;
+}

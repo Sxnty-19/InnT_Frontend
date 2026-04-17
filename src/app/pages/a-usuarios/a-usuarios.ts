@@ -1,11 +1,271 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
+import { OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Navbar } from '../../components/navbar/navbar';
+import { NavbarA } from '../../components/navbar-a/navbar-a';
+import { Footer } from '../../components/footer/footer';
+import { Auth as AuthService } from '../../services/auth';
+import { Rol as RolService } from '../../services/rol';
+import { Usuario as UsuarioService } from '../../services/usuario';
+import { RolX } from '../../interfaces/rol';
+import { UsuarioConRol } from '../../interfaces/usuario';
 
 @Component({
   selector: 'app-a-usuarios',
-  imports: [],
+  imports: [CommonModule, FormsModule, Navbar, NavbarA, Footer],
   templateUrl: './a-usuarios.html',
   styleUrl: './a-usuarios.css',
 })
-export class AUsuarios {
+export class AUsuarios implements OnInit {
 
+  constructor(
+    private cd: ChangeDetectorRef,
+    private rolservice: RolService,
+    private authservice: AuthService,
+    private usuarioservice: UsuarioService
+  ) { }
+
+  usuarios: UsuarioConRol[] = [];
+  roles: RolX[] = [];
+  loading = true;
+  error: string | null = null;
+
+  nuevoUsuario = {
+    id_rol: 3,
+    primer_nombre: '',
+    segundo_nombre: '',
+    primer_apellido: '',
+    segundo_apellido: '',
+    telefono: '',
+    correo: '',
+    username: '',
+    password: '',
+    estado: true,
+  };
+
+  isSubmitting = false;
+  activeView: 'history' | 'create' = 'history';
+
+  pendingUpdates = new Set<number>();
+
+  message = '';
+  isSuccess = false;
+  showMessage = false;
+  isModalActive = false;
+  private toastTimeout: any;
+  private fadeTimeout: any;
+
+  ngOnInit(): void {
+    this.cargarRoles();
+    this.cargarUsuarios();
+    this.cd.detectChanges();
+  }
+
+  hideMessageWithTransition(duration = 300): Promise<void> {
+    this.isModalActive = false;
+    return new Promise(resolve => {
+      if (this.fadeTimeout) clearTimeout(this.fadeTimeout);
+      this.fadeTimeout = setTimeout(() => {
+        this.showMessage = false;
+        resolve();
+        this.cd.detectChanges();
+      }, duration);
+    });
+  }
+
+  async showFloatingMessage(type: 'success' | 'error', text: string): Promise<void> {
+    if (this.toastTimeout) clearTimeout(this.toastTimeout);
+    if (this.showMessage) await this.hideMessageWithTransition(100);
+
+    this.message = text;
+    this.isSuccess = type === 'success';
+    this.showMessage = true;
+    this.isModalActive = true;
+
+    this.cd.detectChanges();
+    this.toastTimeout = setTimeout(() => {
+      this.hideMessageWithTransition(300);
+    }, 4000);
+  }
+
+  cargarRoles(): void {
+    this.rolservice.getRolesActivos().subscribe({
+      next: (data) => {
+        this.roles = data.data || [];
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error cargando roles:', err);
+        this.showFloatingMessage(
+          'error',
+          'No se pudieron cargar los roles del sistema.'
+        );
+        this.cd.detectChanges();
+      }
+    });
+  }
+
+  cargarUsuarios(): void {
+    this.loading = true;
+    this.error = null;
+    this.usuarioservice.getUsuarios().subscribe({
+      next: (data) => {
+        this.usuarios = data.data
+          ? data.data.sort((a: UsuarioConRol, b: UsuarioConRol) => b.id_usuario - a.id_usuario)
+          : [];
+        this.loading = false;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error cargando usuarios:', err);
+        this.error = 'No se pudieron cargar los usuarios.';
+        this.showFloatingMessage(
+          'error',
+          'Fallo al cargar la lista de usuarios.'
+        );
+        this.loading = false;
+        this.cd.detectChanges();
+      }
+    });
+  }
+
+  async toggleEstado(usuario: UsuarioConRol): Promise<void> {
+
+    if (this.showMessage) await this.hideMessageWithTransition(100);
+
+    this.pendingUpdates.add(usuario.id_usuario);
+    this.cd.detectChanges();
+
+    this.usuarioservice.updateEstado(usuario.id_usuario).subscribe({
+      next: async () => {
+        await this.cargarUsuarios();
+
+        const action = usuario.estado === true ? 'desactivado' : 'activado';
+
+        this.showFloatingMessage(
+          'success',
+          `Usuario ${usuario.username} ha sido ${action} con éxito.`
+        );
+      },
+      error: (err) => {
+        console.error('Error al cambiar estado:', err);
+        this.showFloatingMessage(
+          'error',
+          'Fallo al cambiar el estado del usuario.'
+        );
+      },
+      complete: () => {
+        this.pendingUpdates.delete(usuario.id_usuario);
+        this.cd.detectChanges();
+      }
+    });
+  }
+
+  async cambiarRol(usuario: UsuarioConRol, nuevoRolId: number): Promise<void> {
+
+    if (this.showMessage) await this.hideMessageWithTransition(100);
+
+    if (usuario.id_rol === nuevoRolId || isNaN(nuevoRolId)) return;
+
+    this.pendingUpdates.add(usuario.id_usuario);
+    this.cd.detectChanges();
+
+    this.usuarioservice.updateRol(usuario.id_usuario, nuevoRolId).subscribe({
+      next: async () => {
+        await this.cargarUsuarios();
+        this.showFloatingMessage(
+          'success',
+          `Rol de ${usuario.username} actualizado correctamente.`
+        );
+      },
+      error: (err) => {
+        console.error('Error al cambiar rol:', err);
+        this.showFloatingMessage(
+          'error',
+          'Fallo al cambiar el rol del usuario.'
+        );
+      },
+      complete: () => {
+        this.pendingUpdates.delete(usuario.id_usuario);
+        this.cd.detectChanges();
+      }
+    });
+  }
+
+  async crearUsuario(): Promise<void> {
+
+    if (
+      !this.nuevoUsuario.primer_nombre ||
+      !this.nuevoUsuario.primer_apellido ||
+      !this.nuevoUsuario.correo ||
+      !this.nuevoUsuario.username ||
+      !this.nuevoUsuario.password
+    ) {
+      this.showFloatingMessage(
+        'error',
+        'Por favor, rellena los campos obligatorios (*).'
+      );
+      return;
+    }
+
+    if (this.isSubmitting) return;
+
+    this.isSubmitting = true;
+    this.cd.detectChanges();
+
+    if (this.showMessage) await this.hideMessageWithTransition(100);
+
+    this.authservice.register(this.nuevoUsuario).subscribe({
+      next: async () => {
+        this.limpiarNuevo();
+        await this.cargarUsuarios();
+        this.activeView = 'history';
+        this.showFloatingMessage(
+          'success',
+          'Usuario creado y registrado con éxito.'
+        );
+      },
+      error: (err) => {
+        console.error('Error al crear usuario:', err);
+        const message =
+          err?.error?.detail ||
+          'Error desconocido al intentar crear el usuario.';
+        this.showFloatingMessage('error', message);
+      },
+      complete: () => {
+        this.isSubmitting = false;
+        this.cd.detectChanges();
+      }
+    });
+  }
+
+  limpiarNuevo(): void {
+    this.nuevoUsuario = {
+      id_rol: 3,
+      primer_nombre: '',
+      segundo_nombre: '',
+      primer_apellido: '',
+      segundo_apellido: '',
+      telefono: '',
+      correo: '',
+      username: '',
+      password: '',
+      estado: true,
+    };
+  }
+
+  isPending(id: number): boolean {
+    return this.pendingUpdates.has(id);
+  }
+
+  getNombreCompleto(u: UsuarioConRol): string {
+    return [u.primer_nombre, u.segundo_nombre, u.primer_apellido, u.segundo_apellido]
+      .filter(Boolean).join(' ');
+  }
+
+  getUsuariosActivos(): number {
+    return this.usuarios.filter(u => u.estado === true).length;
+  }
 }
