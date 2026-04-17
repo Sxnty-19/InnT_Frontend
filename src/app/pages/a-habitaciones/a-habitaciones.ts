@@ -39,23 +39,42 @@ export class AHabitaciones implements OnInit {
   isSuccess = false;
   showMessage = false;
   private toastTimeout: any;
+  isModalActive = false;
 
   ngOnInit(): void {
     this.cargarTipos();
     this.cargarHabitaciones();
   }
 
+  // Función para ocultar con transición (clase fade-out)
+hideMessageWithTransition() {
+  this.isModalActive = false;
+  setTimeout(() => {
+    this.showMessage = false;
+    this.cd.detectChanges();
+  }, 300);
+}
+
   showCustomMessage(text: string, success: boolean): void {
-    if (this.toastTimeout) clearTimeout(this.toastTimeout);
-    this.message = text;
-    this.isSuccess = success;
-    this.showMessage = true;
+  if (this.toastTimeout) clearTimeout(this.toastTimeout);
+  
+  // Reset previo si ya estaba abierto
+  this.isModalActive = false;
+  
+  this.message = text;
+  this.isSuccess = success;
+  this.showMessage = true;
+  
+  // Pequeño delay para disparar la animación de entrada
+  setTimeout(() => {
+    this.isModalActive = true;
+    this.cd.detectChanges();
+  }, 10);
 
-    this.toastTimeout = setTimeout(() => {
-      this.showMessage = false;
-    }, 4000);
-  }
-
+  this.toastTimeout = setTimeout(() => {
+    this.hideMessageWithTransition();
+  }, 4000);
+}
   cargarTipos(): void {
     this.loadingTipos = true;
     this.errorTipos = null;

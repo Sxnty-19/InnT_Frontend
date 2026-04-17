@@ -235,8 +235,16 @@
 
 <app-footer></app-footer>
 
-<div class="notification-toast" *ngIf="showMessage" [class.active]="showMessage" [class.success]="isSuccess"
-    [class.error]="!isSuccess">
-    <span class="toast-icon">{{ isSuccess ? '✔' : '✖' }}</span>
+<div class="notification-toast" 
+     *ngIf="showMessage" 
+     [class.active]="isModalActive"
+     [class.success]="isSuccess" 
+     [class.error]="!isSuccess"
+     [class.fade-out]="!isModalActive">
+    
+    <span class="toast-icon">{{ isSuccess ? '✅' : '❌' }}</span>
+    
     <p>{{ message }}</p>
+    
+    <button class="toast-close" (click)="hideMessageWithTransition()">✕</button>
 </div>

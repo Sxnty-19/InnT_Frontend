@@ -248,22 +248,81 @@
 .btn-toggle-clean { background: var(--color-primary); color: #fff; }
 .btn-toggle-clean:hover { background: #2563eb; }
 
+/* --- NOTIFICACIONES (ESTILO UNIFICADO) --- */
 .notification-toast {
-  position: fixed; bottom: 28px; right: 28px; z-index: 9999;
-  display: flex; align-items: center; gap: 12px;
-  padding: 14px 20px; border-radius: 14px;
-  background: var(--color-dark); color: var(--color-light);
-  font-size: 0.88rem; font-weight: 600;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.2); border-left: 4px solid #6b7280;
-  max-width: 380px; opacity: 0; transform: translateX(20px);
-  transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none;
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border-radius: 14px;
+  background: #0f172a; /* Fondo oscuro */
+  color: white;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+  max-width: 380px;
+  animation: toastIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  border-left: 4px solid #6b7280;
+  pointer-events: none;
+  opacity: 0;
 }
-.notification-toast.active  { opacity: 1; transform: translateX(0); pointer-events: auto; }
-.notification-toast.success { border-left-color: var(--color-success); }
-.notification-toast.error   { border-left-color: var(--color-error); }
-.toast-icon { font-size: 1rem; flex-shrink: 0; }
-.notification-toast p { margin: 0; line-height: 1.4; }
 
+/* Estado activo y variaciones */
+.notification-toast.active { 
+  opacity: 1; 
+  pointer-events: auto; 
+}
+
+.notification-toast.success { border-left: 4px solid #10b981; }
+.notification-toast.error { border-left: 4px solid #ef4444; }
+
+/* Animación de salida suave */
+.notification-toast.fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.toast-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+.notification-toast p { 
+  font-size: 0.88rem; 
+  font-weight: 500; 
+  margin: 0; 
+  color: #f8fafc; 
+  line-height: 1.4;
+}
+
+.toast-close { 
+  background: transparent; 
+  border: none; 
+  color: rgba(255, 255, 255, 0.4); 
+  font-size: 1rem; 
+  cursor: pointer; 
+  padding: 0 4px; 
+  transition: color 0.2s; 
+  margin-left: auto;
+}
+
+.toast-close:hover { color: white; }
+
+/* Adaptación móvil */
+@media (max-width: 768px) {
+  .notification-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    max-width: none;
+    transform: none;
+  }
+}
 .btn-spinner { width: 14px; height: 14px; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
 .btn-spinner--dark { border: 2px solid rgba(0,0,0,0.15); border-top-color: #333; }
 @keyframes spin { to { transform: rotate(360deg); } }
