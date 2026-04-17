@@ -1,7 +1,7 @@
 .roles-container {
   min-height: 100vh;
   background: var(--color-background-gray);
-  padding-top: 112px;
+  padding-top: 68px;
   padding-bottom: 70px;
 }
 
@@ -577,7 +577,7 @@
 }
 
 @media (max-width: 768px) {
-  .roles-container { padding-top: 106px; }
+  .roles-container { padding-top: 62px; }
   .page-header { padding: 32px 0; }
   .page-header-left h1 { font-size: 1.8rem; }
   .roles-body { padding: 0 16px; }
