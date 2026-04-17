@@ -20,7 +20,11 @@ export class ASolicitudes implements OnInit {
   loading = true;
   error: string | null = null;
   isSubmitting = false;
+  isFinishing = false;
   activeView: 'create' | 'history' = 'create';
+
+  isConfirmingFinish = false;
+  solicitudToFinish: number | null = null;
 
   numero_habitacion = '';
   descripcion = '';
@@ -153,21 +157,39 @@ export class ASolicitudes implements OnInit {
     });
   }
 
-  terminarSolicitud(id_solicitud: number) {
-    const confirmar = confirm("¿Seguro que deseas terminar esta solicitud?");
+  showFinishConfirmation(id_solicitud: number) {
+    this.solicitudToFinish = id_solicitud;
+    this.isConfirmingFinish = true;
+  }
 
-    if (!confirmar) return;
+  cancelFinish() {
+    this.isConfirmingFinish = false;
+    this.solicitudToFinish = null;
+  }
 
-    this.solicitudservice.update_solicitud(id_solicitud).subscribe({
+  executeFinish() {
+    if (!this.solicitudToFinish) return;
+
+    this.isFinishing = true;
+
+    this.solicitudservice.update_solicitud(this.solicitudToFinish).subscribe({
       next: () => {
-        alert("Solicitud terminada correctamente");
+        this.showFloatingMessage('success', 'Solicitud finalizada correctamente.');
         this.cargarSolicitudes();
+        this.cancelFinish();
         this.cd.detectChanges();
       },
 
       error: (err) => {
         console.error(err);
-        alert(err.error.detail || "Error al terminar solicitud");
+        this.showFloatingMessage('error', err.error?.detail || 'Error al terminar solicitud');
+        this.isFinishing = false;
+        this.cd.detectChanges();
+      },
+      
+      complete: () => {
+        this.isFinishing = false;
+        this.cd.detectChanges();
       }
     });
   }

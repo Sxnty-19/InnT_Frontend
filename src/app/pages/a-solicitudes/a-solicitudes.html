@@ -128,14 +128,32 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let s of solicitudes" [class.row-activa]="s.estado === true">
-                                <td class="col-user">{{ s.id_usuario }}</td>
-                                <td class="td-hab">{{ s.numero_habitacion }}</td>
-                                <td class="td-desc">{{ s.descripcion }}</td>
-                                <td>{{ s.date_created | date:'longDate'}}</td>
+                                <td class="col-user">
+                                    <span class="user-id-badge">ID: {{ s.id_usuario }}</span>
+                                </td>
                                 <td>
-                                    <button class="btn-terminar" (click)="terminarSolicitud(s.id_solicitud)"
-                                        [disabled]="s.estado === false">{{ s.estado ? 'Finalizar' : 'Finalizada'
-                                        }}</button>
+                                    <div class="td-capacity">
+                                        <strong>Hab. {{ s.numero_habitacion }}</strong>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="td-desc" title="{{ s.descripcion }}">{{ s.descripcion }}</span>
+                                </td>
+                                <td>
+                                    <div class="td-date">
+                                        <span class="date-main">{{ s.date_created | date:'dd MMM, yyyy' }}</span>
+                                        <span class="date-time">{{ s.date_created | date:'shortTime' }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn-terminar" (click)="showFinishConfirmation(s.id_solicitud)"
+                                        [disabled]="s.estado === false">
+                                        <svg *ngIf="s.estado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14">
+                                            <path d="M20 6L9 17l-5-5"/>
+                                        </svg>
+                                        <span *ngIf="!s.estado">✔</span>
+                                        {{ s.estado ? 'Finalizar' : 'Finalizada' }}
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -154,4 +172,26 @@
     [class.slide-in]="isModalActive" [class.fade-out]="!isModalActive">
     <span class="toast-icon">{{ isSuccess ? '✔' : '✖' }}</span>
     <p>{{ message }}</p>
+</div>
+
+<!-- MODAL: CONFIRMAR FINALIZACIÓN -->
+<div class="modal-backdrop" *ngIf="isConfirmingFinish" (click)="cancelFinish()">
+    <div class="modal-card success-border" (click)="$event.stopPropagation()">
+        <div class="modal-icon-wrap">✅</div>
+        <h3 class="modal-title">Confirmar Finalización</h3>
+        <p class="modal-body">
+            ¿Estás seguro de que deseas dar por finalizada la solicitud
+            <strong>#{{ solicitudToFinish }}</strong>? <br><br>
+            <span class="modal-warning success-warning">Esta acción marcará la solicitud como atendida.</span>
+        </p>
+        <div class="modal-actions">
+            <button class="btn-modal-keep" (click)="cancelFinish()" [disabled]="isFinishing">
+                Cancelar
+            </button>
+            <button class="btn-modal-confirm success-btn" (click)="executeFinish()" [disabled]="isFinishing">
+                <span class="btn-spinner btn-spinner--light" *ngIf="isFinishing"></span>
+                Sí, finalizar
+            </button>
+        </div>
+    </div>
 </div>
