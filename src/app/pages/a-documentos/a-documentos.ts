@@ -55,19 +55,30 @@ export class ADocumentos implements OnInit {
     });
   }
 
-  async showFloatingMessage(type: 'success' | 'error', text: string): Promise<void> {
-    if (this.toastTimeout) clearTimeout(this.toastTimeout);
-    if (this.showMessage) await this.hideMessageWithTransition(100);
-
-    this.message = text;
-    this.isSuccess = type === 'success';
-    this.showMessage = true;
-    this.isModalActive = true;
-
-    this.toastTimeout = setTimeout(() => {
-      this.hideMessageWithTransition(300);
-    }, 4000);
+async showFloatingMessage(type: 'success' | 'error', text: string): Promise<void> {
+  if (this.toastTimeout) clearTimeout(this.toastTimeout);
+  
+  // Si ya hay uno visible, lo ocultamos rápido antes de mostrar el nuevo
+  if (this.showMessage) {
+    this.isModalActive = false;
+    await new Promise(r => setTimeout(r, 100));
   }
+
+  this.message = text;
+  this.isSuccess = type === 'success';
+  this.showMessage = true;
+  
+  // Pequeño delay para que el navegador detecte el cambio y dispare la animación CSS
+  setTimeout(() => {
+    this.isModalActive = true;
+    this.cd.detectChanges();
+  }, 10);
+
+  // El tiempo aquí (4000ms) debe ser igual al de la animación progressLinear en CSS
+  this.toastTimeout = setTimeout(() => {
+    this.hideMessageWithTransition(300);
+  }, 4000);
+}
 
   cargarTiposDocumento() {
     this.tipodocumentoservice.get_tiposDocumento().subscribe({

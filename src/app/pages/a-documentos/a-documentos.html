@@ -62,73 +62,93 @@
                     </div>
                 </div>
 
-                <div class="form-container">
-                    <h4 class="form-title">Nuevo Tipo de Documento</h4>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Nombre del Tipo</label>
-                            <input type="text" [(ngModel)]="nuevoTipo.nombre" placeholder="Ej: Cédula de Ciudadanía" />
+                <div class="two-col-layout">
+                    <!-- Columna Izquierda: Formulario -->
+                    <div class="col-box col-search">
+                        <div class="col-box-header">
+                            <h4>Crear Tipo</h4>
                         </div>
-                        <div class="form-group">
-                            <label>Descripción</label>
-                            <input type="text" [(ngModel)]="nuevoTipo.descripcion"
-                                placeholder="Ej: Documento de identidad personal" />
+                        <div class="form-grid-vertical">
+                            <div class="form-group">
+                                <label>Nombre del Tipo</label>
+                                <input type="text" [(ngModel)]="nuevoTipo.nombre" placeholder="Ej: Cédula de Ciudadanía" />
+                            </div>
+                            <div class="form-group">
+                                <label>Descripción</label>
+                                <input type="text" [(ngModel)]="nuevoTipo.descripcion"
+                                    placeholder="Ej: Documento de identidad personal" />
+                            </div>
+                        </div>
+                        <button class="btn-guardar-tipo" (click)="crearTipo()" [disabled]="isSubmitting">
+                            <span class="btn-spinner btn-spinner--dark" *ngIf="isSubmitting"></span>
+                            <svg *ngIf="!isSubmitting" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                <polyline points="17 21 17 13 7 13 7 21" />
+                                <polyline points="7 3 7 8 15 8" />
+                            </svg>
+                            {{ isSubmitting ? 'Guardando...' : 'Guardar Tipo' }}
+                        </button>
+                    </div>
+
+                    <!-- Columna Derecha: Resumen de Tipos -->
+                    <div class="col-box col-summary">
+                        <div class="col-box-header">
+                            <span class="step-pill step-pill--gold">Detalle</span>
+                            <h4>Tipos Existentes</h4>
+                        </div>
+                        
+                        <div class="room-section">
+                            <div class="room-section-header">
+                                <h5>Registrados en el sistema</h5>
+                                <span class="room-count room-count--gold">{{ tiposDocumentos.length }}</span>
+                            </div>
+
+                            <div class="loading-bar-wrap" *ngIf="loadingTipos">
+                                <div class="loading-bar"></div>
+                            </div>
+            
+                            <div class="empty-state empty-mini" *ngIf="!loadingTipos && error">
+                                <span class="empty-icon">⚠️</span>
+                                <h4>Error al cargar</h4>
+                                <p>{{ error }}</p>
+                            </div>
+
+                            <div class="table-wrapper table-short" *ngIf="!loadingTipos && tiposDocumentos.length > 0">
+                                <table class="doc-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-id">ID</th>
+                                            <th>Detalle</th>
+                                            <th>Docs</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let t of tiposDocumentos">
+                                            <td class="col-id">
+                                                <span class="user-id-badge">{{ t.id_tdocumento }}</span>
+                                            </td>
+                                            <td>
+                                                <div class="td-date">
+                                                    <span class="date-main">{{ t.nombre }}</span>
+                                                    <span class="date-time" title="{{ t.descripcion }}">{{ t.descripcion }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="count-badge">{{ countDocumentsByType(t.nombre) }}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="empty-state empty-mini" *ngIf="!loadingTipos && !error && tiposDocumentos.length === 0">
+                                <span class="empty-icon">📭</span>
+                                <h4>Sin tipos registrados</h4>
+                                <p>Crea el primer tipo de documento.</p>
+                            </div>
                         </div>
                     </div>
-                    <button class="btn-guardar-tipo" (click)="crearTipo()" [disabled]="isSubmitting">
-                        <span class="btn-spinner btn-spinner--dark" *ngIf="isSubmitting"></span>
-                        <svg *ngIf="!isSubmitting" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                            <polyline points="17 21 17 13 7 13 7 21" />
-                            <polyline points="7 3 7 8 15 8" />
-                        </svg>
-                        {{ isSubmitting ? 'Guardando...' : 'Guardar Tipo' }}
-                    </button>
-                </div>
-
-                <div class="section-divider">
-                    <span>Tipos Existentes ({{ tiposDocumentos.length }})</span>
-                </div>
-
-                <div class="loading-bar-wrap" *ngIf="loadingTipos">
-                    <div class="loading-bar"></div>
-                </div>
-
-                <div class="empty-state" *ngIf="!loadingTipos && error">
-                    <span class="empty-icon">⚠️</span>
-                    <h4>Error al cargar</h4>
-                    <p>{{ error }}</p>
-                </div>
-
-                <div class="table-wrapper table-short" *ngIf="!loadingTipos && tiposDocumentos.length > 0">
-                    <table class="doc-table">
-                        <thead>
-                            <tr>
-                                <th class="col-id">ID</th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Docs. Registrados</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let t of tiposDocumentos">
-                                <td class="col-id td-id">{{ t.id_tdocumento }}</td>
-                                <td class="td-nombre">{{ t.nombre }}</td>
-                                <td class="td-desc">{{ t.descripcion }}</td>
-                                <td>
-                                    <span class="count-badge">{{ countDocumentsByType(t.nombre) }}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Sin tipos -->
-                <div class="empty-state" *ngIf="!loadingTipos && !error && tiposDocumentos.length === 0">
-                    <span class="empty-icon">📭</span>
-                    <h4>Sin tipos registrados</h4>
-                    <p>Crea el primer tipo de documento usando el formulario.</p>
                 </div>
 
             </div>
@@ -181,8 +201,14 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let d of documentos" [class.active-row]="d.documento_validado === true">
-                                <td class="td-nombre">{{ d.tipo_documento }}</td>
-                                <td>{{ d.numero_documento }}</td>
+                                <td>
+                                    <span class="user-id-badge">{{ d.tipo_documento }}</span>
+                                </td>
+                                <td>
+                                    <div class="td-date">
+                                        <span class="date-main">#{{ d.numero_documento }}</span>
+                                    </div>
+                                </td>
                                 <td>{{ d.lugar_expedicion }}</td>
                                 <td>{{ d.nombre_completo }}</td>
                                 <td>
@@ -205,8 +231,17 @@
 <app-footer></app-footer>
 
 <!-- TOAST FLOTANTE -->
-<div class="notification-toast" *ngIf="showMessage" [class.active]="isModalActive" [class.success]="isSuccess"
-    [class.error]="!isSuccess">
-    <span class="toast-icon">{{ isSuccess ? '✔' : '✖' }}</span>
-    <p>{{ message }}</p>
+<div class="notification-toast" *ngIf="showMessage" 
+     [class.active]="isModalActive" 
+     [class.success]="isSuccess"
+     [class.error]="!isSuccess">
+    
+    <div class="toast-content">
+        <span class="toast-icon">{{ isSuccess ? '✔' : '✖' }}</span>
+        <p>{{ message }}</p>
+    </div>
+
+    <div class="toast-progress">
+        <div class="toast-progress-fill"></div>
+    </div>
 </div>
