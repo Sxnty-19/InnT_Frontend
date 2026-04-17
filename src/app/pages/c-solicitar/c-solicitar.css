@@ -500,6 +500,45 @@
   line-height: 1.4;
 }
 
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+/* --- ESTILOS DINÁMICOS TABLA --- */
+
+.td-date {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.date-main {
+  font-weight: 700;
+  color: var(--color-dark-text);
+  font-size: 0.88rem;
+}
+
+.date-time {
+  font-size: 0.72rem;
+  color: var(--color-medium-gray);
+  font-weight: 500;
+}
+
+.td-capacity {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.td-capacity strong { font-size: 1rem; color: var(--color-dark-text); }
+.td-capacity span { font-size: 0.75rem; color: var(--color-medium-gray); }
+
 @media (max-width: 900px) {
   .page-header-right {
     display: none;

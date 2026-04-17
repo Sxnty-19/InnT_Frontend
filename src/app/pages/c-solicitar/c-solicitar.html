@@ -111,16 +111,33 @@
                     <table class="doc-table">
                         <thead>
                             <tr>
+                                <th>Fecha Petición</th>
                                 <th>Habitación</th>
                                 <th>Descripción</th>
-                                <th>Fecha</th>
+                                <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of solicitudes" [class.row-activa]="item.estado === true">
-                                <td class="td-hab">{{ item.numero_habitacion }}</td>
-                                <td class="td-desc">{{ item.descripcion }}</td>
-                                <td>{{ item.date_created | date:'longDate' }}</td>
+                                <td>
+                                    <div class="td-date">
+                                        <span class="date-main">{{ item.date_created | date:'dd MMM, yyyy' }}</span>
+                                        <span class="date-time">{{ item.date_created | date:'shortTime' }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="td-capacity">
+                                        <strong>Hab. {{ item.numero_habitacion }}</strong>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="td-desc" title="{{ item.descripcion }}">{{ item.descripcion }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge-estado" [class.activo]="item.estado" [class.cerrado]="!item.estado">
+                                        {{ item.estado ? 'Pendiente' : 'Atendida' }}
+                                    </span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

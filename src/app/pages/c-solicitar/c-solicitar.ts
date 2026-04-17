@@ -87,8 +87,12 @@ export class CSolicitar implements OnInit {
         error: (err) => {
 
           console.error(err);
-          this.error = 'Error al cargar solicitudes.';
           this.solicitudes = [];
+          if (err.status && err.status >= 500) {
+            this.error = 'Error del servidor al cargar solicitudes.';
+          } else {
+            this.error = '';
+          }
           this.cd.detectChanges();
         }
       });
