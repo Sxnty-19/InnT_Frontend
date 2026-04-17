@@ -1,18 +1,31 @@
-<nav class="mod-nav">
-    <div class="nav-wrapper">
+<nav class="sidebar-nav" [class.open]="isMenuOpen">
+    <button class="menu-trigger" (click)="toggleMenu()" [attr.aria-label]="isMenuOpen ? 'Cerrar menú' : 'Abrir menú'">
+        <div class="hamburger" [class.active]="isMenuOpen">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+
+    <div class="sidebar-wrapper">
+        <div *ngIf="isLoading" class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
 
         <p *ngIf="error" class="mod-error">
             <span>⚠</span> {{ error }}
         </p>
 
-        <div *ngIf="isLoading" class="loading-bar-container">
-            <div class="loading-bar"></div>
-        </div>
-
-        <div *ngIf="!isLoading && modulos.length > 0" class="mod-buttons-container" [class.open]="isMenuOpen">
+        <div *ngIf="!isLoading && modulos.length > 0" class="mod-buttons-container">
+            <div class="mod-header">
+                <h3>Navegación</h3>
+            </div>
             <button *ngFor="let m of modulos" class="mod-btn" (click)="ir(m.ruta)">
+                <span class="dot">✦</span>
                 {{ m.nombre }}
             </button>
         </div>
     </div>
 </nav>
+
+<div class="sidebar-overlay" *ngIf="isMenuOpen" (click)="toggleMenu()"></div>

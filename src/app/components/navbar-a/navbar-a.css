@@ -1,155 +1,136 @@
-.mod-nav {
+/* Contenedor Principal Lateral */
+.sidebar-nav {
   position: fixed;
-  top: 68px;
+  top: 0;
   left: 0;
-  width: 100%;
-  z-index: 999;
+  height: 100vh;
+  width: 250px;
   background: var(--color-dark);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 1001;
+  /* Oculta totalmente la sidebar dejando sólo sobresalir el trigger */
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.6);
+  border-right: 1px solid rgba(252, 211, 77, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-.nav-wrapper {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 50px;
-  min-height: 44px;
+.sidebar-nav.open {
+  transform: translateX(0); /* Despliegue completo */
+}
+
+/* Botón disparador en el lateral derecho del sidebar (SIN TEXTO) */
+.menu-trigger {
+  position: absolute;
+  right: -48px; 
+  top: 80px;
+  width: 48px;
+  height: 56px; /* Altura reducida y compacta al no tener texto */
+  background: var(--color-dark);
+  border: 1px solid rgba(252, 211, 77, 0.2);
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--color-secondary);
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.menu-trigger:hover {
+  background: #0f172a;
+  box-shadow: 6px 0 16px rgba(0, 0, 0, 0.3);
+  width: 54px; /* Un ligero aumento para feedback visual */
+  right: -54px;
+}
+
+/* Icono de Hamburguesa Animado */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--color-secondary);
+  transition: 0.35s ease-in-out;
+}
+
+.hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Contenido del Sidebar */
+.sidebar-wrapper {
+  padding: 40px 20px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.mod-header h3 {
+  color: var(--color-light);
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 25px;
+  opacity: 0.6;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 10px;
 }
 
 .mod-buttons-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  flex-wrap: wrap;
-  padding: 5px 0;
-  width: 100%;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .mod-btn {
-  position: relative;
   background: transparent;
-  color: rgba(226, 232, 240, 0.55);
+  color: rgba(226, 232, 240, 0.7);
   border: none;
-  padding: 6px 16px;
-  border-radius: 6px;
-  font-size: 0.82rem;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 0.9rem;
   font-weight: 500;
-  font-family: 'Georgia', serif;
+  text-align: left;
   cursor: pointer;
   transition: all 0.2s ease;
-  white-space: nowrap;
-  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.mod-btn::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%) scaleX(0);
-  width: 60%;
-  height: 2px;
-  background: var(--color-secondary);
-  border-radius: 2px;
-  transition: transform 0.22s ease;
+.mod-btn .dot {
+  color: var(--color-secondary);
+  opacity: 0;
+  transition: 0.2s;
 }
 
 .mod-btn:hover {
-  color: var(--color-light);
   background: rgba(255, 255, 255, 0.05);
+  color: var(--color-light);
+  padding-left: 20px;
 }
 
-.mod-btn:hover::after {
-  transform: translateX(-50%) scaleX(1);
+.mod-btn:hover .dot {
+  opacity: 1;
 }
 
-.mod-btn.active {
-  color: var(--color-secondary);
+/* Overlay de fondo */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
 }
 
-.mod-btn.active::after {
-  transform: translateX(-50%) scaleX(1);
-}
-
-.mod-btn:active {
-  transform: scale(0.97);
-}
-
-.loading-bar-container {
-  width: 100%;
-  height: 2px;
-  background: transparent;
-  overflow: hidden;
-}
-
-.loading-bar {
-  height: 100%;
-  width: 35%;
-  background: linear-gradient(90deg, transparent, rgba(252, 211, 77, 0.5), transparent);
-  animation: loadingSlide 1.2s ease-in-out infinite;
-}
-
-@keyframes loadingSlide {
-  0%   { transform: translateX(-150%); }
-  100% { transform: translateX(400%); }
-}
-
-.mod-error {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #f87171;
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 8px 0;
-}
-
-.empty-message {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(226, 232, 240, 0.3);
-  font-size: 0.8rem;
-  font-style: italic;
-  padding: 8px 0;
-}
-
-@media (max-width: 992px) {
-  .nav-wrapper {
-    padding: 0 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .mod-nav {
-    top: 62px;
-  }
-
-  .nav-wrapper {
-    padding: 0 8px;
-    overflow-x: auto;
-    justify-content: flex-start;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .nav-wrapper::-webkit-scrollbar {
-    display: none;
-  }
-
-  .mod-buttons-container {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    padding: 5px 0;
-    gap: 0;
-  }
-
-  .mod-btn {
-    font-size: 0.78rem;
-    padding: 6px 12px;
-    flex-shrink: 0;
-  }
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
