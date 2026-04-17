@@ -125,3 +125,84 @@
         </button>
     </div>
 </div>
+
+<!-- MODAL: ASIGNAR MÓDULOS -->
+<div class="modal-backdrop" *ngIf="showAssignModal" (click)="showAssignModal = false"></div>
+<div class="modal-card modal-asignar" *ngIf="showAssignModal">
+    <div class="modal-card-header">
+        <h3>Gestionar Módulos: <em>{{ currentRole?.nombre }}</em></h3>
+        <button class="modal-close" (click)="showAssignModal = false">✕</button>
+    </div>
+
+    <div class="assign-grid">
+        <div class="assign-panel">
+            <h4 class="assign-panel-title">Asignar Nuevo Módulo</h4>
+            <div class="form-group">
+                <label>Módulo</label>
+                <select [(ngModel)]="selectedModuloToAssign">
+                    <option [ngValue]="null" disabled selected>Seleccione un módulo...</option>
+                    <option *ngFor="let m of modulos" [value]="m.id_modulo">{{ m.nombre }} - {{ m.descripcion }}</option>
+                </select>
+            </div>
+            <button class="btn-modal-save btn-block" (click)="handleAsignarModulo()" [disabled]="assigningBusy || !selectedModuloToAssign">
+                <span class="btn-spinner btn-spinner--light" *ngIf="assigningBusy"></span>
+                {{ assigningBusy ? 'Asignando...' : 'Asignar al Rol' }}
+            </button>
+        </div>
+
+        <div class="assign-panel">
+            <h4 class="assign-panel-title">Módulos Asignados</h4>
+            <div class="loading-text" *ngIf="cargandoAsignados">Cargando módulos asignados...</div>
+            
+            <div class="empty-state-mini" *ngIf="!cargandoAsignados && assignedModules.length === 0">
+                <p>Este rol no tiene módulos asignados aún.</p>
+            </div>
+
+            <div class="table-mini-wrap" *ngIf="!cargandoAsignados && assignedModules.length > 0">
+                <table class="tabla-mini">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Módulo</th>
+                            <th>Ruta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let am of assignedModules">
+                            <td class="mini-id">#{{ am.id_modulo }}</td>
+                            <td><strong>{{ am.nombre }}</strong></td>
+                            <td class="mini-ruta">{{ am.ruta || '/' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn-modal-cancel" (click)="showAssignModal = false">Cerrar Ventana</button>
+    </div>
+</div>
+
+<!-- MODAL: CONFIRMACIÓN GENÉRICA -->
+<div class="modal-backdrop" *ngIf="showConfirmModal" (click)="showConfirmModal = false"></div>
+<div class="modal-card modal-confirm" *ngIf="showConfirmModal">
+    <div class="modal-icon-wrap">⚠️</div>
+    <h3 class="modal-confirm-title">Confirmar Acción</h3>
+    <p class="modal-confirm-msg">{{ confirmMessage }}</p>
+    
+    <div class="modal-footer modal-footer--center">
+        <button class="btn-modal-cancel" (click)="showConfirmModal = false">Cancelar</button>
+        <button class="btn-modal-save" (click)="confirmAction()">Confirmar</button>
+    </div>
+</div>
+
+<!-- NOTIFICACIÓN TOAST -->
+<div class="notification-toast" [class.active]="showMessage" [class.success]="isSuccess" [class.error]="!isSuccess">
+    <span class="toast-icon">
+        <ng-container *ngIf="isSuccess">✔</ng-container>
+        <ng-container *ngIf="!isSuccess">✖</ng-container>
+    </span>
+    <p>{{ message }}</p>
+    <button class="toast-close" (click)="hideNotification()">✕</button>
+</div>

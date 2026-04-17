@@ -15,7 +15,7 @@ import { ModuloAsignado } from '../../interfaces/modulo-rol';
 
 @Component({
   selector: 'app-a-roles',
-  imports: [CommonModule, FormsModule, Navbar, NavbarA, Footer],
+  imports: [CommonModule, FormsModule, Navbar, NavbarA],
   templateUrl: './a-roles.html',
   styleUrl: './a-roles.css',
 })
@@ -85,6 +85,11 @@ export class ARoles implements OnInit {
     this.toastTimeout = setTimeout(() => {
       this.hideMessageWithTransition(300);
     }, 4000);
+  }
+
+  hideNotification(): void {
+    if (this.toastTimeout) clearTimeout(this.toastTimeout);
+    this.hideMessageWithTransition(300);
   }
 
   cargarRoles(): void {
