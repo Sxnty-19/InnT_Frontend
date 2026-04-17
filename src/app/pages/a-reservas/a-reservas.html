@@ -248,17 +248,34 @@
                         <tbody>
                             <tr *ngFor="let r of reservas" [class.active-row]="r.estado === true"
                                 [class.cancelled-row]="r.estado !== true">
-                                <td class="td-id" [attr.data-label]="'ID'">#{{ r.id_reserva }}</td>
-                                <td class="td-usuario" [attr.data-label]="'Usuario'">{{ r.nombre_completo }}</td>
-                                <td [attr.data-label]="'Inicio'">{{ r.date_start.substring(0, 10) }}</td>
-                                <td [attr.data-label]="'Fin'">{{ r.date_end.substring(0, 10) }}</td>
+                                <td class="col-user" [attr.data-label]="'ID'">
+                                    <span class="user-id-badge">ID: {{ r.id_reserva }}</span>
+                                </td>
+                                <td [attr.data-label]="'Usuario'">
+                                    <div class="td-capacity">
+                                        <strong>{{ r.nombre_completo }}</strong>
+                                    </div>
+                                </td>
+                                <td [attr.data-label]="'Inicio'">
+                                    <div class="td-date">
+                                        <span class="date-main">{{ r.date_start | date:'dd MMM, yyyy' }}</span>
+                                    </div>
+                                </td>
+                                <td [attr.data-label]="'Fin'">
+                                    <div class="td-date">
+                                        <span class="date-main">{{ r.date_end | date:'dd MMM, yyyy' }}</span>
+                                    </div>
+                                </td>
                                 <td [attr.data-label]="'Estado'">
                                     <span class="badge-estado activo" *ngIf="r.estado === true">Activa</span>
                                     <span class="badge-estado cancelado" *ngIf="r.estado !== true">Cancelada</span>
                                 </td>
                                 <td [attr.data-label]="'Acción'">
-                                    <button class="btn-cancelar-admin" *ngIf="r.estado === true"
+                                    <button class="btn-cancelar" *ngIf="r.estado === true"
                                         (click)="showCancelConfirmation(r.id_reserva)" [disabled]="isLoading">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14">
+                                            <path d="M18 6L6 18M6 6l12 12"/>
+                                        </svg>
                                         Cancelar
                                     </button>
                                     <span class="td-finalizada" *ngIf="r.estado !== true">Finalizada</span>

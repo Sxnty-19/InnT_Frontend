@@ -49,15 +49,26 @@ export class AReservas implements OnInit {
   hideNotification(): void {
     this.showMessage = false;
     this.message = '';
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+      this.toastTimeout = null;
+    }
+    this.cd.detectChanges();
   }
 
   showNotification(msg: string, success: boolean): void {
-    this.hideNotification();
-    if (this.toastTimeout) clearTimeout(this.toastTimeout);
-    this.isSuccess = success;
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+    }
+
     this.message = msg;
+    this.isSuccess = success;
     this.showMessage = true;
-    this.toastTimeout = setTimeout(() => this.hideNotification(), 4000);
+    this.cd.detectChanges();
+
+    this.toastTimeout = setTimeout(() => {
+      this.hideNotification();
+    }, 4000);
   }
 
   cargarReservas(): void {
