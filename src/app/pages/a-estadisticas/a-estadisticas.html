@@ -1,84 +1,74 @@
-<app-navbar></app-navbar>
-<app-navbar-a></app-navbar-a>
+<div class="estadisticas-container">
+    <app-navbar></app-navbar>
+    <app-navbar-a></app-navbar-a>
 
-<div class="page-header">
-    <div class="page-header-bg-dots"></div>
-    <div class="page-header-content">
-        <div class="page-header-left">
-            <span class="page-tag">✦ Datos</span>
-            <h1>Estadísticas</h1>
-            <p>Datos en tiempo real</p>
-        </div>
-        <div class="page-header-right">
-            <div class="header-stat">
-                <span class="header-stat-icon">🏨</span>
-                <div>
-                    <strong>Hospedaje Santandereano</strong>
-                    <span>En tiempo real</span>
+    <div class="page-header">
+        <div class="page-header-bg-dots"></div>
+        <div class="page-header-content">
+            <div class="page-header-left">
+                <span class="page-tag">Datos</span>
+                <h1>Estadísticas</h1>
+                <p>Análisis de rendimiento en tiempo real</p>
+            </div>
+            <div class="page-header-right">
+                <div class="header-stat">
+                    <span class="header-stat-icon">📈</span>
+                    <div>
+                        <strong>Hospedaje Santandereano</strong>
+                        <span>Panel Administrativo</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="estadisticas-body">
+        <div class="kpis-container">
+            <div class="kpi-card">
+                <h3>Usuarios Totales</h3>
+                <p>{{ totalUsuarios }}</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Reservas Activas</h3>
+                <p>{{ reservasProgramadas }}</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Habitaciones Libres</h3>
+                <p>{{ habitacionesDisponibles }}</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Ingresos del Mes</h3>
+                <p>{{ ingresosMes | currency:'COP':'symbol-narrow':'1.0-0' }}</p>
+            </div>
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-box">
+                <h3>Flujo de Reservas Mensuales</h3>
+                <canvas id="reservasChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Análisis de Ingresos</h3>
+                <canvas id="ingresosChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Demanda por Tipo de Habitación</h3>
+                <canvas id="tiposChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Distribución de Usuarios</h3>
+                <canvas id="rolesChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Estado de Inventario</h3>
+                <canvas id="habitacionesChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Actividad de Solicitudes Diarias</h3>
+                <canvas id="solicitudesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <app-footer></app-footer>
 </div>
-
-<!-- 🔥 KPIs -->
-<div class="kpis-container">
-
-    <div class="kpi-card">
-        <h3>Usuarios</h3>
-        <p>{{ totalUsuarios }}</p>
-    </div>
-
-    <div class="kpi-card">
-        <h3>Reservas Programadas</h3>
-        <p>{{ reservasProgramadas }}</p>
-    </div>
-
-    <div class="kpi-card">
-        <h3>Habitaciones Disponibles</h3>
-        <p>{{ habitacionesDisponibles }}</p>
-    </div>
-
-    <div class="kpi-card">
-        <h3>Ingresos del Mes</h3>
-        <p>{{ ingresosMes | currency:'COP' }}</p>
-    </div>
-
-</div>
-
-<!-- 📊 GRÁFICAS (placeholder por ahora) -->
-<div class="charts-container">
-
-    <div class="chart-box">
-        <h3>Reservas por mes</h3>
-        <canvas id="reservasChart"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <h3>Ingresos por mes</h3>
-        <canvas id="ingresosChart"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <h3>Tipos de habitación</h3>
-        <canvas id="tiposChart"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <h3>Usuarios por rol</h3>
-        <canvas id="rolesChart"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <h3>Habitaciones por tipo</h3>
-        <canvas id="habitacionesChart"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <h3>Solicitudes por día</h3>
-        <canvas id="solicitudesChart"></canvas>
-    </div>
-
-</div>
-
-<app-footer></app-footer>

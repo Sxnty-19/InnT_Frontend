@@ -160,11 +160,11 @@
                     </table>
                 </div>
 
-                <div class="section-divider">
+                <div class="section-divider" *ngIf="documentos.length === 0">
                     <span>➕ Agregar nuevo documento</span>
                 </div>
 
-                <form [formGroup]="documentoForm" (ngSubmit)="crearDocumento()" class="doc-form">
+                <form [formGroup]="documentoForm" (ngSubmit)="crearDocumento()" class="doc-form" *ngIf="documentos.length === 0">
                     <div class="form-grid form-grid--3">
                         <div class="form-group">
                             <label>Tipo de documento</label>

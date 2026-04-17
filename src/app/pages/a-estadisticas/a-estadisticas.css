@@ -1,79 +1,223 @@
+/* Contenedor Principal */
+.estadisticas-container {
+  min-height: 100vh;
+  background: var(--color-background-gray);
+  padding-top: 68px; /* Ajustado al estándar de c-reservar */
+  padding-bottom: 70px;
+}
 
+/* Reutilizamos el estilo del Header que ya manejamos */
+.page-header {
+  background: var(--color-dark);
+  background-image: 
+    radial-gradient(ellipse at 10% 60%, rgba(30, 58, 138, 0.4) 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 20%, rgba(252, 211, 77, 0.05) 0%, transparent 50%),
+    linear-gradient(150deg, #060b14 0%, var(--color-dark) 100%);
+  padding: 44px 0; /* Padding estándar de c-reservar */
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid rgba(252, 211, 77, 0.1);
+}
+
+.page-header-bg-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(252, 211, 77, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.page-header-content {
+  max-width: 1100px; /* Estándar: 1100px */
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-tag {
+  display: inline-block;
+  background: rgba(252, 211, 77, 0.1);
+  color: var(--color-secondary);
+  border: 1px solid rgba(252, 211, 77, 0.25);
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.page-header-left h1 {
+  font-family: 'Georgia', serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--color-light);
+  line-height: 1.15;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.page-header-left p {
+  font-size: 0.92rem;
+  color: rgba(226, 232, 240, 0.6);
+  line-height: 1.6;
+}
+
+.header-stat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px 22px;
+  flex-shrink: 0;
+}
+
+.header-stat-icon { font-size: 1.6rem; }
+
+.header-stat strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-light);
+  margin-bottom: 3px;
+}
+
+.header-stat span {
+  font-size: 0.78rem;
+  color: rgba(226, 232, 240, 0.5);
+}
+
+/* Nuevo Wrapper central igual a c-reservar */
+.estadisticas-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+/* --- SECCIÓN DE KPIs --- */
 .kpis-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
-  padding: 20px;
+  margin-bottom: 30px; /* Separación con las gráficas */
 }
 
 .kpi-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  text-align: center;
+  background: var(--color-light);
+  padding: 24px 28px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-subtle);
+  border: 1px solid rgba(0,0,0,0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .kpi-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
 }
 
 .kpi-card h3 {
-  font-size: 14px;
-  color: #777;
-  margin-bottom: 10px;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-medium-gray);
+  margin-bottom: 12px;
+  font-weight: 700;
 }
 
 .kpi-card p {
-  font-size: 28px;
-  font-weight: bold;
-  color: #222;
+  font-family: 'Georgia', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--color-dark-text);
+  margin: 0;
 }
 
+/* Variación para el ingreso (color acento) */
+.kpi-card:last-child p {
+  color: var(--color-primary);
+}
 
+/* --- SECCIÓN DE GRÁFICAS --- */
 .charts-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+  gap: 24px;
 }
 
 .chart-box {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: var(--color-light);
+  padding: 32px;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-subtle);
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s ease;
+}
+
+.chart-box:hover {
+  box-shadow: 0 12px 35px rgba(0,0,0,0.07);
 }
 
 .chart-box h3 {
-  font-size: 16px;
-  margin-bottom: 15px;
-  color: #333;
+  font-family: 'Georgia', serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-dark-text);
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.chart-box canvas {
+/* Canvas placeholder */
+canvas {
   width: 100% !important;
-  height: 250px !important;
+  height: 100% !important;
+  max-height: 250px;
 }
 
-@media (max-width: 1024px) {
-  .kpis-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .charts-container {
-    grid-template-columns: repeat(2, 1fr);
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  .page-header-right {
+    display: none;
   }
 }
 
-@media (max-width: 600px) {
-  .kpis-container {
-    grid-template-columns: 1fr;
-  }
-
+@media (max-width: 992px) {
   .charts-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* 1 columna en tablets */
   }
+}
+
+@media (max-width: 768px) {
+  .estadisticas-container { padding-top: 62px; }
+  .page-header { padding: 32px 0; }
+  .page-header-left h1 { font-size: 1.8rem; }
+  .estadisticas-body { padding: 0 16px; }
+}
+
+@media (max-width: 480px) {
+  .page-header-left h1 { font-size: 1.55rem; }
+  .kpi-card p { font-size: 1.5rem; }
 }
