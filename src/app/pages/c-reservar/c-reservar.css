@@ -1,7 +1,7 @@
 .reservas-container {
   min-height: 100vh;
   background: var(--color-background-gray);
-  padding-top: 112px;
+  padding-top: 68px;
   padding-bottom: 70px;
 }
 
@@ -949,5 +949,5 @@ label {
 /* RESPONSIVE */
 @media (max-width: 1024px) { .two-col-layout { grid-template-columns: 1fr; gap: 20px; } }
 @media (max-width: 900px) { .page-header-right { display: none; } .tabs-nav { width: 100%; } .tab-btn { flex: 1; justify-content: center; } }
-@media (max-width: 768px) { .reservas-container { padding-top: 106px; } .page-header { padding: 32px 0; } .page-header-left h1 { font-size: 1.8rem; } .reservas-body { padding: 0 16px; } .perfil-card { padding: 24px 20px; } .notification-toast { left: 16px; right: 16px; max-width: none; bottom: 16px; } .modal-actions { flex-direction: column-reverse; } }
+@media (max-width: 768px) { .reservas-container { padding-top: 62px; } .page-header { padding: 32px 0; } .page-header-left h1 { font-size: 1.8rem; } .reservas-body { padding: 0 16px; } .perfil-card { padding: 24px 20px; } .notification-toast { left: 16px; right: 16px; max-width: none; bottom: 16px; } .modal-actions { flex-direction: column-reverse; } }
 @media (max-width: 480px) { .page-header-left h1 { font-size: 1.55rem; } .card-header { flex-direction: column; align-items: flex-start; gap: 10px; } .doc-table th, .doc-table td { padding: 10px 10px; font-size: 0.8rem; } }
