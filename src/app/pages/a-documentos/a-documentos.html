@@ -71,7 +71,8 @@
                         <div class="form-grid-vertical">
                             <div class="form-group">
                                 <label>Nombre del Tipo</label>
-                                <input type="text" [(ngModel)]="nuevoTipo.nombre" placeholder="Ej: Cédula de Ciudadanía" />
+                                <input type="text" [(ngModel)]="nuevoTipo.nombre"
+                                    placeholder="Ej: Cédula de Ciudadanía" />
                             </div>
                             <div class="form-group">
                                 <label>Descripción</label>
@@ -97,7 +98,7 @@
                             <span class="step-pill step-pill--gold">Detalle</span>
                             <h4>Tipos Existentes</h4>
                         </div>
-                        
+
                         <div class="room-section">
                             <div class="room-section-header">
                                 <h5>Registrados en el sistema</h5>
@@ -107,7 +108,7 @@
                             <div class="loading-bar-wrap" *ngIf="loadingTipos">
                                 <div class="loading-bar"></div>
                             </div>
-            
+
                             <div class="empty-state empty-mini" *ngIf="!loadingTipos && error">
                                 <span class="empty-icon">⚠️</span>
                                 <h4>Error al cargar</h4>
@@ -118,31 +119,29 @@
                                 <table class="doc-table">
                                     <thead>
                                         <tr>
-                                            <th class="col-id">ID</th>
-                                            <th>Detalle</th>
                                             <th>Docs</th>
+                                            <th>Detalle</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let t of tiposDocumentos">
-                                            <td class="col-id">
-                                                <span class="user-id-badge">{{ t.id_tdocumento }}</span>
+                                            <td>
+                                                <span class="count-badge">{{ countDocumentsByType(t.nombre) }}</span>
                                             </td>
                                             <td>
                                                 <div class="td-date">
                                                     <span class="date-main">{{ t.nombre }}</span>
-                                                    <span class="date-time" title="{{ t.descripcion }}">{{ t.descripcion }}</span>
+                                                    <span class="date-time" title="{{ t.descripcion }}">{{ t.descripcion
+                                                        }}</span>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                <span class="count-badge">{{ countDocumentsByType(t.nombre) }}</span>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
 
-                            <div class="empty-state empty-mini" *ngIf="!loadingTipos && !error && tiposDocumentos.length === 0">
+                            <div class="empty-state empty-mini"
+                                *ngIf="!loadingTipos && !error && tiposDocumentos.length === 0">
                                 <span class="empty-icon">📭</span>
                                 <h4>Sin tipos registrados</h4>
                                 <p>Crea el primer tipo de documento.</p>
@@ -231,15 +230,12 @@
 <app-footer></app-footer>
 
 <!-- TOAST FLOTANTE -->
-<div class="notification-toast" 
-     *ngIf="showMessage" 
-     [class.success]="isSuccess" 
-     [class.error]="!isSuccess"
-     [class.fade-out]="!isModalActive">
-    
+<div class="notification-toast" *ngIf="showMessage" [class.success]="isSuccess" [class.error]="!isSuccess"
+    [class.fade-out]="!isModalActive">
+
     <span class="toast-icon">{{ isSuccess ? '✅' : '❌' }}</span>
-    
+
     <p>{{ message }}</p>
-    
+
     <button class="toast-close" (click)="hideMessageWithTransition()">✕</button>
 </div>
