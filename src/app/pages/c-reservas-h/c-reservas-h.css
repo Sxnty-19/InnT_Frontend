@@ -214,8 +214,21 @@
 
 .table-wrapper {
   overflow-x: auto;
-  border-radius: 14px;
+  overflow-y: auto;
+  max-height: 200px;
+  border-radius: 12px;
   border: 1px solid #f1f5f9;
+  margin-bottom: 0;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
 }
 
 .doc-table {
@@ -305,6 +318,76 @@
   color: var(--color-medium-gray);
   border: 1px solid rgba(75, 85, 99, 0.15);
   text-transform: capitalize;
+}
+
+/* --- ESTILOS DINÁMICOS TABLA RESERVAS --- */
+
+.td-date {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.date-main {
+  font-weight: 700;
+  color: var(--color-dark-text);
+  font-size: 0.88rem;
+}
+
+.date-time {
+  font-size: 0.72rem;
+  color: var(--color-medium-gray);
+  font-weight: 500;
+}
+
+.td-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.badge-yes, .badge-no {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.badge-yes {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+}
+
+.badge-no {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+.td-capacity {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.td-capacity strong { font-size: 1rem; color: var(--color-dark-text); }
+.td-capacity span { font-size: 0.75rem; color: var(--color-medium-gray); }
+
+.td-price {
+  color: var(--color-primary);
+  font-family: 'Georgia', serif;
+}
+
+.td-price .currency {
+  font-size: 0.65rem;
+  margin-right: 3px;
+  font-weight: 800;
+  color: var(--color-medium-gray);
+}
+
+.td-price strong {
+  font-size: 1.05rem;
+  letter-spacing: -0.5px;
 }
 
 @media (max-width: 900px) {

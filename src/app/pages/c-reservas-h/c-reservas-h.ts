@@ -34,16 +34,21 @@ export class CReservasH implements OnInit {
     this.reservaservice.getReservasTerminadas().subscribe({
       next: (data: any) => {
         this.historial = data.data || [];
-        if (this.historial.length === 0) {
-          this.error = 'No tienes reservas finalizadas.';
-        }
+        // Eliminado la sobreescritura de "this.error" ya que el HTML usa un valor fallback
         this.isLoaded = true;
         this.isLoading = false;
         this.cd.detectChanges();
       },
       error: (err) => {
         console.error(err);
-        this.error = 'Error al cargar historial.';
+        this.historial = [];
+        // Si el backend lanza error (por ej. 404 Not Found), asumimos lista vacía
+        // Solo mostramos error si fue un problema real de servidor.
+        if (err.status && err.status >= 500) {
+            this.error = 'Error del servidor al cargar historial.';
+        } else {
+            this.error = ''; // Así el HTML mostrará 'Sin historial disponible'
+        }
         this.isLoading = false;
         this.cd.detectChanges();
       }

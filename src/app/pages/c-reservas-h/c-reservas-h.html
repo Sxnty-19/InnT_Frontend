@@ -51,29 +51,47 @@
                         <tr>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
-                            <th>Niños</th>
-                            <th>Mascotas</th>
-                            <th>Capacidad MAX</th>
-                            <th>Total (COP)</th>
+                            <th>Extras</th>
+                            <th>Capacidad</th>
+                            <th>Total Reserva</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of historial; let i = index" [style.animation-delay]="(i * 0.05) + 's'">
-                            <td>{{ item.date_start | date:'longDate' }}</td>
-                            <td>{{ item.date_end | date:'longDate' }}</td>
                             <td>
-                                <span [class.badge-yes]="item.tiene_ninos" [class.badge-no]="!item.tiene_ninos">
-                                    {{ item.tiene_ninos ? 'Sí' : 'No' }}
-                                </span>
+                                <div class="td-date">
+                                    <span class="date-main">{{ item.date_start | date:'dd MMM, yyyy' }}</span>
+                                    <span class="date-time">Entrada 1:30 PM</span>
+                                </div>
                             </td>
-
                             <td>
-                                <span [class.badge-yes]="item.tiene_mascotas" [class.badge-no]="!item.tiene_mascotas">
-                                    {{ item.tiene_mascotas ? 'Sí' : 'No' }}
-                                </span>
+                                <div class="td-date">
+                                    <span class="date-main">{{ item.date_end | date:'dd MMM, yyyy' }}</span>
+                                    <span class="date-time">Salida 3:30 PM</span>
+                                </div>
                             </td>
-                            <td>{{ item.capacidad_total }} Personas</td>
-                            <td>${{ item.total_cop | number}}</td>
+                            <td>
+                                <div class="td-badges">
+                                    <span [class]="item.tiene_ninos ? 'badge-yes' : 'badge-no'">
+                                        {{ item.tiene_ninos ? '👶 Niños' : 'Sin niños' }}
+                                    </span>
+                                    <span [class]="item.tiene_mascotas ? 'badge-yes' : 'badge-no'">
+                                        {{ item.tiene_mascotas ? '🐾 Mascotas' : 'Sin mascotas' }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-capacity">
+                                    <strong>{{ item.capacidad_total }}</strong>
+                                    <span>Personas</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-price">
+                                    <span class="currency">COP</span>
+                                    <strong>{{ item.total_cop | number }}</strong>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
