@@ -588,3 +588,45 @@
   .notification-toast { bottom: 16px; right: 16px; left: 16px; max-width: 100%; }
   .modal-card { top: 10px; transform: translate(-50%, 0); max-height: 95vh; }
 }
+/* Añadir estas correcciones al final de tu CSS */
+
+.full-width {
+    grid-column: 1 / -1 !important;
+}
+
+textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    font-family: inherit;
+    resize: vertical;
+}
+
+/* Mejora para el scroll de la tabla */
+.table-wrapper::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* Ajuste de los botones para que no se peguen en móvil */
+@media (max-width: 768px) {
+    .td-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
+        width: 100%;
+    }
+    
+    .btn-toggle-estado, .btn-asignar {
+        width: 100%;
+        justify-content: center;
+    }
+}
