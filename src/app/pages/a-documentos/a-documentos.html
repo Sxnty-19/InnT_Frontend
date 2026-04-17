@@ -231,17 +231,15 @@
 <app-footer></app-footer>
 
 <!-- TOAST FLOTANTE -->
-<div class="notification-toast" *ngIf="showMessage" 
-     [class.active]="isModalActive" 
-     [class.success]="isSuccess"
-     [class.error]="!isSuccess">
+<div class="notification-toast" 
+     *ngIf="showMessage" 
+     [class.success]="isSuccess" 
+     [class.error]="!isSuccess"
+     [class.fade-out]="!isModalActive">
     
-    <div class="toast-content">
-        <span class="toast-icon">{{ isSuccess ? '✔' : '✖' }}</span>
-        <p>{{ message }}</p>
-    </div>
-
-    <div class="toast-progress">
-        <div class="toast-progress-fill"></div>
-    </div>
+    <span class="toast-icon">{{ isSuccess ? '✅' : '❌' }}</span>
+    
+    <p>{{ message }}</p>
+    
+    <button class="toast-close" (click)="hideMessageWithTransition()">✕</button>
 </div>

@@ -332,6 +332,7 @@
 .badge-estado.activo   { background: rgba(16,185,129,0.12); color: var(--color-success); border: 1px solid rgba(16,185,129,0.25); }
 .badge-estado.inactivo { background: rgba(239,68,68,0.1);   color: var(--color-error);   border: 1px solid rgba(239,68,68,0.2); }
 
+/* --- NOTIFICACIONES (ESTILO PERFIL) --- */
 .notification-toast {
   position: fixed;
   bottom: 28px;
@@ -342,17 +343,61 @@
   gap: 12px;
   padding: 14px 22px;
   border-radius: 14px;
-  background: #0f172a;
+  background: #0f172a; /* Fondo oscuro exacto */
   color: white;
   box-shadow: 0 10px 40px rgba(0,0,0,0.25);
   max-width: 380px;
   animation: toastIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  border-left: 4px solid #6b7280; /* Borde por defecto */
 }
-.notification-toast.active  { opacity: 1; transform: translateX(0); pointer-events: auto; }
-.notification-toast.success { border-left-color: var(--color-success); }
-.notification-toast.error   { border-left-color: var(--color-error); }
-.toast-icon { font-size: 1rem; flex-shrink: 0; }
-.notification-toast p { margin: 0; line-height: 1.4; }
+
+.notification-toast.success { border-left: 4px solid #10b981; }
+.notification-toast.error { border-left: 4px solid #ef4444; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Animación de salida (opcional para el fadeOut del TS) */
+.notification-toast.fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.toast-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+.notification-toast p { 
+  font-size: 0.88rem; 
+  font-weight: 500; 
+  margin: 0; 
+  color: #f8fafc; 
+  line-height: 1.4;
+}
+
+.toast-close { 
+  background: transparent; 
+  border: none; 
+  color: rgba(255, 255, 255, 0.4); 
+  font-size: 1rem; 
+  cursor: pointer; 
+  padding: 0 4px; 
+  transition: color 0.2s; 
+  margin-left: auto;
+}
+
+.toast-close:hover { color: white; }
+
+/* Media query para móviles */
+@media (max-width: 768px) {
+  .notification-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    max-width: none;
+  }
+}
 
 .btn-spinner {
   width: 14px; height: 14px; border-radius: 50%;

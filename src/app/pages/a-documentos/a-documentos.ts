@@ -35,48 +35,38 @@ export class ADocumentos implements OnInit {
   message = '';
   isSuccess = false;
   showMessage = false;
-  isModalActive = false;
+  isModalActive = false; // Controla la animación de entrada/salida
   private toastTimeout: any;
-  private fadeTimeout: any;
 
   ngOnInit(): void {
     this.cargarTiposDocumento();
     this.cargarDocumentos();
   }
 
-  hideMessageWithTransition(duration = 300): Promise<void> {
-    this.isModalActive = false;
-    return new Promise(resolve => {
-      if (this.fadeTimeout) clearTimeout(this.fadeTimeout);
-      this.fadeTimeout = setTimeout(() => {
-        this.showMessage = false;
-        resolve();
-      }, duration);
-    });
-  }
+// Función para cerrar el mensaje con transición
+hideMessageWithTransition() {
+  this.isModalActive = false;
+  // Esperamos a que la animación de CSS termine antes de quitar el *ngIf
+  setTimeout(() => {
+    this.showMessage = false;
+    this.cd.detectChanges();
+  }, 300);
+}
 
+// Función principal para mostrar el mensaje
 async showFloatingMessage(type: 'success' | 'error', text: string): Promise<void> {
+  // Limpiar cualquier timeout previo
   if (this.toastTimeout) clearTimeout(this.toastTimeout);
-  
-  // Si ya hay uno visible, lo ocultamos rápido antes de mostrar el nuevo
-  if (this.showMessage) {
-    this.isModalActive = false;
-    await new Promise(r => setTimeout(r, 100));
-  }
 
   this.message = text;
   this.isSuccess = type === 'success';
   this.showMessage = true;
-  
-  // Pequeño delay para que el navegador detecte el cambio y dispare la animación CSS
-  setTimeout(() => {
-    this.isModalActive = true;
-    this.cd.detectChanges();
-  }, 10);
+  this.isModalActive = true;
+  this.cd.detectChanges();
 
-  // El tiempo aquí (4000ms) debe ser igual al de la animación progressLinear en CSS
+  // Autocerrado tras 4 segundos (igual que en Perfil)
   this.toastTimeout = setTimeout(() => {
-    this.hideMessageWithTransition(300);
+    this.hideMessageWithTransition();
   }, 4000);
 }
 
